@@ -1,8 +1,8 @@
 //
 //  SMAsyncLayer.m
-//  SMAsyncLabel
+//  SMAsyncLabel <https://github.com/icoderRo/SMAsyncLabel>
 //
-//  Created by simon on 16/11/22.
+//  Created by simon on 16/11/24.
 //  Copyright © 2016年 simon. All rights reserved.
 //
 
@@ -15,7 +15,7 @@
 
 #pragma mark - queue
 + (dispatch_queue_t)SMDisplayQueue {
-    #define MAX_QUEUE_COUNT 16
+#define MAX_QUEUE_COUNT 16
     static int queueCount;
     static dispatch_queue_t queues[MAX_QUEUE_COUNT];
     static dispatch_once_t onceToken;
@@ -38,7 +38,7 @@
     int32_t cur = OSAtomicIncrement32(&counter);
     if (cur < 0) cur = -cur;
     return queues[(cur) % queueCount];
-    #undef MAX_QUEUE_COUNT
+#undef MAX_QUEUE_COUNT
 }
 
 + (dispatch_queue_t)SMReleaseQueue {
@@ -127,27 +127,27 @@
         BOOL (^isCancelled)() = ^BOOL() {
             return value != sentinel.value;
         };
-//        
-//        CGSize size = self.bounds.size;
-//        NSLog(@"display size %@", NSStringFromCGSize(size));
-//        BOOL opaque = self.opaque;
-//        CGFloat scale = self.contentsScale;
-//        
-//        CGColorRef backgroupColor = (opaque && self.backgroundColor) ? CGColorRetain(self.backgroundColor) : NULL;
-//        
-//        if (size.width < 1 || size.height < 1) {
-//            CGImageRef image = (__bridge_retained CGImageRef)(self.contents);
-//            self.contents = nil;
-//            if (image) {
-//                dispatch_async([SMAsyncLayer SMReleaseQueue], ^{
-//                    CFRelease(image);
-//                });
-//            }
-//            
-//            if (task.didEndDisplay) task.didEndDisplay(self, YES);
-//            CGColorRelease(backgroupColor);
-//            return;
-//        }
+        //
+        //        CGSize size = self.bounds.size;
+        //        NSLog(@"display size %@", NSStringFromCGSize(size));
+        //        BOOL opaque = self.opaque;
+        //        CGFloat scale = self.contentsScale;
+        //
+        //        CGColorRef backgroupColor = (opaque && self.backgroundColor) ? CGColorRetain(self.backgroundColor) : NULL;
+        //
+        //        if (size.width < 1 || size.height < 1) {
+        //            CGImageRef image = (__bridge_retained CGImageRef)(self.contents);
+        //            self.contents = nil;
+        //            if (image) {
+        //                dispatch_async([SMAsyncLayer SMReleaseQueue], ^{
+        //                    CFRelease(image);
+        //                });
+        //            }
+        //
+        //            if (task.didEndDisplay) task.didEndDisplay(self, YES);
+        //            CGColorRelease(backgroupColor);
+        //            return;
+        //        }
         
         dispatch_async([SMAsyncLayer SMDisplayQueue], ^{
             if (isCancelled()) {
@@ -167,9 +167,9 @@
             if (opaque) { // 不透明
                 // 因为图形上下文在每一时刻都有一个确定的状态，该状态概括了图形上下文所有属性的设置。为了便于操作这些状态，图形上下文提供了一个用来持有状态的栈。调用CGContextSaveGState函数，上下文会将完整的当前状态压入栈顶；调用CGContextRestoreGState函数，上下文查找处在栈顶的状态，并设置当前上下文状态为栈顶状态。
                 
-               // 因此一般绘图模式是：在绘图之前调用CGContextSaveGState函数保存当前状态，接着根据需要设置某些上下文状态，然后绘图，最后调用CGContextRestoreGState函数将当前状态恢复到绘图之前的状态。要注意的是，CGContextSaveGState函数和CGContextRestoreGState函数必须成对出现
+                // 因此一般绘图模式是：在绘图之前调用CGContextSaveGState函数保存当前状态，接着根据需要设置某些上下文状态，然后绘图，最后调用CGContextRestoreGState函数将当前状态恢复到绘图之前的状态。要注意的是，CGContextSaveGState函数和CGContextRestoreGState函数必须成对出现
                 CGContextSaveGState(context); {
-                   // backgroundColor为nil并且opaque属性为YES，视图的背景颜色就会变成黑色。初始化为白色
+                    // backgroundColor为nil并且opaque属性为YES，视图的背景颜色就会变成黑色。初始化为白色
                     if (!backgroupColor || CGColorGetAlpha(backgroupColor) < 1) {
                         CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
                         CGContextAddRect(context, CGRectMake(0, 0, size.width *scale, size.height *scale));
@@ -207,7 +207,7 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (isCancelled()) {
-                   if (task.didEndDisplay) task.didEndDisplay(self, NO);
+                    if (task.didEndDisplay) task.didEndDisplay(self, NO);
                 } else {
                     self.contents = (__bridge id)(image.CGImage);
                     if (task.didEndDisplay) task.didEndDisplay(self, YES);

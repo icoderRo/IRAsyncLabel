@@ -1,8 +1,8 @@
 //
 //  SMAsyncLayer.h
-//  SMAsyncLabel
+//  SMAsyncLabel <https://github.com/icoderRo/SMAsyncLabel>
 //
-//  Created by simon on 16/11/22.
+//  Created by simon on 16/11/24.
 //  Copyright © 2016年 simon. All rights reserved.
 //
 
