@@ -82,7 +82,7 @@
 
 #pragma mark - private
 - (void)display:(BOOL)async {
-    __strong id<SMLayerDelegate> delegate = self.delegate;
+    __strong id<SMLayerDelegate> delegate = (id<SMLayerDelegate>)self.delegate;
     // 设置displayTask的block
     SMLayerDisplayTask *task = [delegate displayTask];
     
@@ -171,7 +171,7 @@
                 CGContextSaveGState(context); {
                     // backgroundColor为nil并且opaque属性为YES，视图的背景颜色就会变成黑色。初始化为白色
                     if (!backgroupColor || CGColorGetAlpha(backgroupColor) < 1) {
-                        CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+                        CGContextSetFillColorWithColor(context, [UIColor greenColor].CGColor);
                         CGContextAddRect(context, CGRectMake(0, 0, size.width *scale, size.height *scale));
                         CGContextFillPath(context);
                     }

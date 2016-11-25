@@ -11,5 +11,14 @@
 
 @interface SMTextLayout : NSObject
 @property (nonatomic,strong,readonly) SMTextContainer *container;
-+ (instancetype)SM_layoutWithContainer:(SMTextContainer *)container text:(NSAttributedString *)text;
+@property (nonatomic,strong,readonly) NSAttributedString *text;
+@property (nonatomic, copy) NSArray *textArray;
+
++ (instancetype)SM_layoutWithContainer:(SMTextContainer *)container
+                                  text:(NSAttributedString *)text;
+
+- (void)SM_drawInContext:(CGContextRef)context
+                 size:(CGSize)size
+                point:(CGPoint)point
+               cancel:(BOOL (^)(void))cancel;
 @end

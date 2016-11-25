@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SMTextLayout.h"
+#import "SMTextStorage.h"
 
 @interface SMAsyncLabel : UIView
-
+@property (nonatomic, strong) SMTextLayout *layout;
+@property (nonatomic, copy) NSArray<SMTextStorage *> *textArray;
 @end
