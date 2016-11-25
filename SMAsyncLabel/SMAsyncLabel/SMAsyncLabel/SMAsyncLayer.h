@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
  isCancelled  是否需要绘制.
  
  */
-@property (nullable, nonatomic, copy) void (^display)(CGContextRef context, CGSize size, BOOL(^cancel)(void));
+@property (nullable, nonatomic, copy) void (^display)(CGContextRef context, CGSize size, BOOL(^isCancelled)(void));
 
 /**
  * 绘制完成时候调用

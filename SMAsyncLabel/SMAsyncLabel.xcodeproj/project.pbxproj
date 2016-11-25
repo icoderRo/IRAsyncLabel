@@ -14,6 +14,10 @@
 		F46AF4731DE6EEEA0067BBA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F46AF4721DE6EEEA0067BBA7 /* Assets.xcassets */; };
 		F46AF4761DE6EEEA0067BBA7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F46AF4741DE6EEEA0067BBA7 /* LaunchScreen.storyboard */; };
 		F46AF4801DE6EF1F0067BBA7 /* SMAsyncLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F46AF47F1DE6EF1F0067BBA7 /* SMAsyncLayer.m */; };
+		F46AF4831DE6F00B0067BBA7 /* SMTextLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F46AF4821DE6F00B0067BBA7 /* SMTextLayout.m */; };
+		F46AF4861DE6F06A0067BBA7 /* SMTextContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F46AF4851DE6F06A0067BBA7 /* SMTextContainer.m */; };
+		F46AF4891DE6F08F0067BBA7 /* SMTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = F46AF4881DE6F08F0067BBA7 /* SMTextStorage.m */; };
+		F4C910371DE811BB00514987 /* SMAsyncLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F4C910361DE811BB00514987 /* SMAsyncLabel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +33,14 @@
 		F46AF4771DE6EEEA0067BBA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F46AF47E1DE6EF1F0067BBA7 /* SMAsyncLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAsyncLayer.h; sourceTree = "<group>"; };
 		F46AF47F1DE6EF1F0067BBA7 /* SMAsyncLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAsyncLayer.m; sourceTree = "<group>"; };
+		F46AF4811DE6F00B0067BBA7 /* SMTextLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTextLayout.h; sourceTree = "<group>"; };
+		F46AF4821DE6F00B0067BBA7 /* SMTextLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTextLayout.m; sourceTree = "<group>"; };
+		F46AF4841DE6F06A0067BBA7 /* SMTextContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTextContainer.h; sourceTree = "<group>"; };
+		F46AF4851DE6F06A0067BBA7 /* SMTextContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTextContainer.m; sourceTree = "<group>"; };
+		F46AF4871DE6F08F0067BBA7 /* SMTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTextStorage.h; sourceTree = "<group>"; };
+		F46AF4881DE6F08F0067BBA7 /* SMTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTextStorage.m; sourceTree = "<group>"; };
+		F4C910351DE811BB00514987 /* SMAsyncLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAsyncLabel.h; sourceTree = "<group>"; };
+		F4C910361DE811BB00514987 /* SMAsyncLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAsyncLabel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,8 +98,16 @@
 		F46AF47D1DE6EF0A0067BBA7 /* SMAsyncLabel */ = {
 			isa = PBXGroup;
 			children = (
+				F4C910351DE811BB00514987 /* SMAsyncLabel.h */,
+				F4C910361DE811BB00514987 /* SMAsyncLabel.m */,
 				F46AF47E1DE6EF1F0067BBA7 /* SMAsyncLayer.h */,
 				F46AF47F1DE6EF1F0067BBA7 /* SMAsyncLayer.m */,
+				F46AF4811DE6F00B0067BBA7 /* SMTextLayout.h */,
+				F46AF4821DE6F00B0067BBA7 /* SMTextLayout.m */,
+				F46AF4841DE6F06A0067BBA7 /* SMTextContainer.h */,
+				F46AF4851DE6F06A0067BBA7 /* SMTextContainer.m */,
+				F46AF4871DE6F08F0067BBA7 /* SMTextStorage.h */,
+				F46AF4881DE6F08F0067BBA7 /* SMTextStorage.m */,
 			);
 			path = SMAsyncLabel;
 			sourceTree = "<group>";
@@ -163,10 +183,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F46AF4891DE6F08F0067BBA7 /* SMTextStorage.m in Sources */,
 				F46AF4801DE6EF1F0067BBA7 /* SMAsyncLayer.m in Sources */,
+				F46AF4831DE6F00B0067BBA7 /* SMTextLayout.m in Sources */,
+				F46AF4861DE6F06A0067BBA7 /* SMTextContainer.m in Sources */,
 				F46AF46E1DE6EEEA0067BBA7 /* ViewController.m in Sources */,
 				F46AF46B1DE6EEEA0067BBA7 /* AppDelegate.m in Sources */,
 				F46AF4681DE6EEEA0067BBA7 /* main.m in Sources */,
+				F4C910371DE811BB00514987 /* SMAsyncLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +345,7 @@
 				F46AF47C1DE6EEEA0067BBA7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
