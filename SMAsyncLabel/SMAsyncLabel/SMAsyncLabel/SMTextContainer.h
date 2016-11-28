@@ -13,5 +13,5 @@
 @property (nonatomic,strong,readonly) UIBezierPath *path;
 @property (nonatomic,assign,readonly) CGSize size;
 
-+ (instancetype)SM_textContainerWithSize:(CGSize)size;
++ (instancetype)sm_textContainerWithSize:(CGSize)size;
 @end

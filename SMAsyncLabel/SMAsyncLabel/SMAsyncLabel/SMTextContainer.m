@@ -21,7 +21,7 @@
     return self;
 }
 
-+ (instancetype)SM_textContainerWithSize:(CGSize)size {
++ (instancetype)sm_textContainerWithSize:(CGSize)size {
     SMTextContainer *textContainer = [[SMTextContainer alloc] init];
     UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)];
     textContainer.path = path;

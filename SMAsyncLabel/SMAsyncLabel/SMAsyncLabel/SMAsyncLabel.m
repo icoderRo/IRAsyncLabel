@@ -39,7 +39,7 @@
         // 准备干活
         
         for (SMTextStorage *textStorage in self.textArray) {
-            [textStorage.textLayout SM_drawInContext:context size:size point:CGPointMake(self.frame.origin.x, self.frame.origin.y) cancel:isCancelled];
+            [textStorage.textLayout sm_drawInContext:context size:size point:CGPointMake(self.frame.origin.x, self.frame.origin.y) cancel:isCancelled];
         };
         
     };

@@ -25,8 +25,8 @@
 - (void)setupTextLayout {
     if (!_attributeText) return;
     
-//    SMTextContainer *textContainer = [SMTextContainer SM_textContainerWithSize:CGSizeMake(20, 10)];
+//    SMTextContainer *textContainer = [SMTextContainer sm_textContainerWithSize:CGSizeMake(20, 10)];
     SMTextContainer *textContainer = [[SMTextContainer alloc] init];
-    _textLayout = [SMTextLayout SM_layoutWithContainer:textContainer text:self.attributeText];
+    _textLayout = [SMTextLayout sm_layoutWithContainer:textContainer text:self.attributeText];
 }
 @end

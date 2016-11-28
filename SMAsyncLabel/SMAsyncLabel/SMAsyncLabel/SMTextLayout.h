@@ -8,16 +8,19 @@
 
 #import <Foundation/Foundation.h>
 #import "SMTextContainer.h"
-
+#import "SMTextLine.h"
 @interface SMTextLayout : NSObject
 @property (nonatomic,strong,readonly) SMTextContainer *container;
 @property (nonatomic,strong,readonly) NSAttributedString *text;
 @property (nonatomic, copy) NSArray *textArray;
+@property (nonatomic, strong, readonly) NSArray<SMTextLine *> *linesArray;
 
-+ (instancetype)SM_layoutWithContainer:(SMTextContainer *)container
+@property (nonatomic, assign, readonly) BOOL needDrawText;
+
++ (instancetype)sm_layoutWithContainer:(SMTextContainer *)container
                                   text:(NSAttributedString *)text;
 
-- (void)SM_drawInContext:(CGContextRef)context
+- (void)sm_drawInContext:(CGContextRef)context
                  size:(CGSize)size
                 point:(CGPoint)point
                cancel:(BOOL (^)(void))cancel;
