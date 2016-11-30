@@ -33,8 +33,6 @@
 @property (nonatomic) NSUInteger row;
 
 
-
-
 + (instancetype)sm_textLineWithCTLine:(CTLineRef)CTLine lineOrigin:(CGPoint)lineOrigin;
 @end
 

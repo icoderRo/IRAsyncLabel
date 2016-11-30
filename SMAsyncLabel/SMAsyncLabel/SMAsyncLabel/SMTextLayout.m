@@ -41,7 +41,6 @@
     
     
     // CTLineRef
-    
     int rowIndex = -1;
     int rowCount = 0;
     int curIndex = 0;
@@ -109,7 +108,13 @@
     layout->_needDrawText = YES;
     layout->_container = container;
     layout->_text = text.mutableCopy;
-    // TODO: setting....
+    layout->_linesArray = linesArray;
+    // TODO: setting more ....
+    
+    CFRelease(frameSetter);
+    CFRelease(frame);
+    CFRelease(path);
+    if (lineOrigins) free(lineOrigins);
     return layout;
 }
 

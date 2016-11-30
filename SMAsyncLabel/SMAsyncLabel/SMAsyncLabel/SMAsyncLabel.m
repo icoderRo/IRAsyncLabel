@@ -30,21 +30,28 @@
 - (SMLayerDisplayTask *)displayTask {
     SMLayerDisplayTask *task = [[SMLayerDisplayTask alloc] init];
     
-    // 移除所有attachment
+    // remove attachment
     task.willDisplay = ^(CALayer *layer) {
         
     };
     
     task.display = ^(CGContextRef context, CGSize size, BOOL(^isCancelled)(void)) {
-        // 准备干活
         
+        
+        
+        
+        
+        
+        // donging...
         for (SMTextStorage *textStorage in self.textArray) {
-            [textStorage.textLayout sm_drawInContext:context size:size point:CGPointMake(self.frame.origin.x, self.frame.origin.y) cancel:isCancelled];
+            CGPoint point = CGPointZero;
+            
+            [textStorage.textLayout sm_drawInContext:context size:size point:point cancel:isCancelled];
         };
         
     };
     
-    // 移除所有的attachment, 动画
+    // remove attachment, animation
     task.didEndDisplay = ^(CALayer *layer, BOOL finished) {
         
     };

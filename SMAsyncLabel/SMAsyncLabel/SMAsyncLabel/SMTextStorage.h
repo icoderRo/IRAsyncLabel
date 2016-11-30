@@ -13,5 +13,12 @@
 @interface SMTextStorage : NSObject
 @property (nonatomic, strong, readonly) SMTextLayout *textLayout;
 @property (nonatomic, copy) NSString *text;
-@property (nonatomic, copy) NSMutableAttributedString *attributeText;
+@property (nonatomic, copy) NSAttributedString *attributeText;
+@property (nonatomic,assign) CGRect frame;
+
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
++ (instancetype)new UNAVAILABLE_ATTRIBUTE;
+
+- (id)initWithFrame:(CGRect)frame;
++ (SMTextStorage *)sm_textStorageWithText:(NSString *)text frame:(CGRect)frame;
 @end

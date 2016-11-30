@@ -37,6 +37,7 @@
     });
     int32_t cur = OSAtomicIncrement32(&counter);
     if (cur < 0) cur = -cur;
+    NSLog(@"%@", queues[(cur) % queueCount]);
     return queues[(cur) % queueCount];
 #undef MAX_QUEUE_COUNT
 }
@@ -93,9 +94,7 @@
         return;
     }
     
-    
     CGSize size = self.bounds.size;
-    NSLog(@"display size %@", NSStringFromCGSize(size));
     BOOL opaque = self.opaque;
     CGFloat scale = self.contentsScale;
     
@@ -119,35 +118,14 @@
     if (async) {
         if (task.willDisplay) task.willDisplay(self);
         
-        // 初始守卫值
+        // init
         SMSentinel *sentinel = _sentinel;
         int32_t value = sentinel.value;
         
-        // 初始化用于判断的是否需要取消绘制的block
+        // cancel block
         BOOL (^isCancelled)() = ^BOOL() {
             return value != sentinel.value;
         };
-        //
-        //        CGSize size = self.bounds.size;
-        //        NSLog(@"display size %@", NSStringFromCGSize(size));
-        //        BOOL opaque = self.opaque;
-        //        CGFloat scale = self.contentsScale;
-        //
-        //        CGColorRef backgroupColor = (opaque && self.backgroundColor) ? CGColorRetain(self.backgroundColor) : NULL;
-        //
-        //        if (size.width < 1 || size.height < 1) {
-        //            CGImageRef image = (__bridge_retained CGImageRef)(self.contents);
-        //            self.contents = nil;
-        //            if (image) {
-        //                dispatch_async([SMAsyncLayer SMReleaseQueue], ^{
-        //                    CFRelease(image);
-        //                });
-        //            }
-        //
-        //            if (task.didEndDisplay) task.didEndDisplay(self, YES);
-        //            CGColorRelease(backgroupColor);
-        //            return;
-        //        }
         
         dispatch_async([SMAsyncLayer SMDisplayQueue], ^{
             if (isCancelled()) {
@@ -185,7 +163,7 @@
                 CGColorRelease(backgroupColor);
             }
             
-            // 执行block, 自定义干活
+            // block doing...
             task.display(context, size, isCancelled);
             
             if (isCancelled()) {
