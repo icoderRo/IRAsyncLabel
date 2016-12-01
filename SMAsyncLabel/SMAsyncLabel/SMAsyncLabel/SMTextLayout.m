@@ -118,7 +118,6 @@
     return layout;
 }
 
-
 #pragma mark - Draw
 - (void)sm_drawInContext:(CGContextRef)context
                  size:(CGSize)size

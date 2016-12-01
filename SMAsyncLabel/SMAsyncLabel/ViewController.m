@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "SMTextStorage.h"
 #import "SMAsyncLabel.h"
 
 @interface ViewController ()
@@ -19,29 +18,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    SMAsyncLabel *label = [[SMAsyncLabel alloc] initWithFrame:CGRectMake(0, 20, 200, 200)];
+    SMAsyncLabel *label = [[SMAsyncLabel alloc] initWithFrame:CGRectMake(0, 20, 200, 400)];
     NSString *test = @"Hello, World! I know nothing in the world that 😭❤️我们has as一样的 much power as a word. Sometimes I write one, and I look at it, until it begins to shine.🙂😢🙂😢🙂😢哈哈哈哈哈哈weixiasd";
-    
-    SMTextLayout *layout = [[SMTextLayout alloc] init];
-    SMTextStorage *storage = [SMTextStorage sm_textStorageWithText:test frame:CGRectMake(0, 0, 200, 200)];
-//    storage.text = test;
-    
-    label.textArray = @[storage];
-    label.layout = layout;
-    
+    label.font = [UIFont systemFontOfSize:20];
+    label.text = test;
+
     [self.view addSubview:label];
 
     {
-        SMAsyncLabel *label = [[SMAsyncLabel alloc] initWithFrame:CGRectMake(0, 200, 200,  400)];
-        NSString *test = @"Hello, World! I know nothing in the world that 😭❤️我们has as一样的 much power as a word. Sometimes I write one, and I look at it, until it begins to shine.🙂😢🙂😢🙂😢哈哈哈哈哈哈weixiasd";
+        SMAsyncLabel *label = [[SMAsyncLabel alloc] initWithFrame:CGRectMake(0, 410, 200, 200)];
+        NSString *test = @"Hello, World! I know nothing in the world that 😭❤️我们has as一样的 much power as a word. Sometimes I write one, and I look at it, until it begins to shine.🙂😢🙂😢🙂😢哈哈哈哈哈哈weixiasd    sdafasgdhfjg!!!!!!!!!!!!";
         label.backgroundColor = [UIColor yellowColor];
-        SMTextLayout *layout = [[SMTextLayout alloc] init];
-        SMTextStorage *storage = [[SMTextStorage alloc] initWithFrame:CGRectMake(0, 200, 200, CGFLOAT_MAX)];
-        storage.text = test;
-        
-        label.textArray = @[storage];
-        label.layout = layout;
-        
+        label.textColor = [UIColor blueColor];
+        label.text = test;
         [self.view addSubview:label];
     }
     
