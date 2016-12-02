@@ -19,6 +19,10 @@
 @property (null_resettable, nonatomic, strong) UIFont *font;
 
 @property (null_resettable, nonatomic, strong) UIColor *textColor;
+
+@property (nullable, nonatomic, strong) SMTextLayout *textLayout;
+@property (nonatomic, assign) CGFloat preferredMaxLayoutWidth;
+@property (nonatomic) NSUInteger numberOfLines;
 @end
 
 @interface NSMutableAttributedString (SMText)

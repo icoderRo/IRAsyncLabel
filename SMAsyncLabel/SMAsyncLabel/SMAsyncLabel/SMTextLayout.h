@@ -14,7 +14,7 @@
 @property (nonatomic,strong,readonly) NSAttributedString *text;
 @property (nonatomic, copy) NSArray *textArray;
 @property (nonatomic, strong, readonly) NSArray<SMTextLine *> *linesArray;
-
+@property (nonatomic,assign,readonly) CGSize size;
 @property (nonatomic, assign, readonly) BOOL needDrawText;
 
 + (instancetype)sm_layoutWithContainer:(SMTextContainer *)container

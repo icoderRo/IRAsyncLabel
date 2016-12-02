@@ -42,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, assign, getter=isDisplayAsync) BOOL displayAsync;
 
+
 /**
  *  监控绘制对象
  */
