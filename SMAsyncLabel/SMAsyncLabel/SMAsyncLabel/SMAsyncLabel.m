@@ -9,7 +9,6 @@
 #import "SMAsyncLabel.h"
 #import "SMAsyncLayer.h"
 
-
 @interface SMAsyncLabel () <SMLayerDelegate>
 /// make the NSAttributedString -> NSMutableAttributedString for using addAttributemethod  or removeAttribute
 @property (nonatomic, copy) NSMutableAttributedString *attrs;
@@ -54,7 +53,7 @@
     
     task.display = ^(CGContextRef context, CGSize size, BOOL (^isCancelled)(void)) {
         if (self.layoutNeedUpdate) {
-            SMTextContainer *textContainer = [SMTextContainer sm_textContainerWithSize:self.frame.size];
+            SMTextContainer *textContainer = [SMTextContainer sm_textContainerWithSize:self.frame.size numberOfLines:_numberOfLines];
             _textLayout = [SMTextLayout sm_layoutWithContainer:textContainer text:_attrs];
         }
         
@@ -136,6 +135,8 @@
 }
 
 - (void)setNumberOfLines:(NSUInteger)numberOfLines {
+    if (_numberOfLines == numberOfLines) return;
+    
     _numberOfLines = numberOfLines;
     
     if (_attrs.length) {
@@ -147,14 +148,16 @@
     if (_preferredMaxLayoutWidth == 0) return CGSizeZero;
     
     CGSize containerSize;
-    containerSize.height = CGFLOAT_MAX;
+    containerSize.height = SMTextContainerMaxSize.height;
     containerSize.width = _preferredMaxLayoutWidth;
     if (containerSize.width == 0) containerSize.width = self.bounds.size.width;
     
-    SMTextContainer *textContainer = [SMTextContainer sm_textContainerWithSize:containerSize];
+    SMTextContainer *textContainer = [SMTextContainer sm_textContainerWithSize:containerSize numberOfLines:_numberOfLines];
     SMTextLayout *layout = [SMTextLayout sm_layoutWithContainer:textContainer text:_attrs];
     return layout.size;
 }
+
+
 @end
 
 

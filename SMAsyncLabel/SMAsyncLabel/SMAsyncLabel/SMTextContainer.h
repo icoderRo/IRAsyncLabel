@@ -12,6 +12,8 @@
 
 @property (nonatomic,strong,readonly) UIBezierPath *path;
 @property (nonatomic,assign,readonly) CGSize size;
+@property (nonatomic) NSUInteger numberOfLines;
 
 + (instancetype)sm_textContainerWithSize:(CGSize)size;
++ (instancetype)sm_textContainerWithSize:(CGSize)size numberOfLines:(NSUInteger)numberOfLines;
 @end

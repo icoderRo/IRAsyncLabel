@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    SMAsyncLabel *label = [[SMAsyncLabel alloc] initWithFrame:CGRectMake(0, 20, 200, 400)];
+    SMAsyncLabel *label = [[SMAsyncLabel alloc] initWithFrame:CGRectMake(10, 20, 200, 300)];
     NSString *test = @"Hello, World! I know nothing in the world that 😭❤️我们has as一样的 much power as a word. Sometimes I write one, and I look at it, until it begins to shine.🙂😢🙂😢🙂😢哈哈哈哈哈哈weixiasd";
     label.font = [UIFont systemFontOfSize:20];
     label.text = test;
@@ -50,11 +50,11 @@
             NSMutableAttributedString *attrs = [[NSMutableAttributedString alloc] initWithString:test1];
             [attrs setTextColor:[UIColor whiteColor] range:NSMakeRange(0, attrs.length)];
             SMTextContainer *textContainer = [SMTextContainer sm_textContainerWithSize:CGSizeMake(200, 200)];
+            textContainer.numberOfLines = 3;
             SMTextLayout *textLayout = [SMTextLayout sm_layoutWithContainer:textContainer text:attrs];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 SMAsyncLabel *label = [SMAsyncLabel new];
-                
                 label.textLayout = textLayout;
                 label.frame = CGRectMake(10, 400,textLayout.size.width, textLayout.size.height);
                 label.backgroundColor = [UIColor grayColor];
@@ -64,21 +64,7 @@
         });
     }
     
-    {
-        UILabel *label = [[UILabel alloc] init];
-        label.text = test1;
-        label.backgroundColor = [UIColor orangeColor];
-        label.numberOfLines = 0;
-        label.preferredMaxLayoutWidth = 200;
-        label.font = [UIFont systemFontOfSize:13];
-        [self.view addSubview:label];
-        
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(label1.mas_bottom).offset(-100);
-            make.right.equalTo(self.view).offset(-10);
-      
-        }];
-    }
+    
     
     {
         SMAsyncLabel *label = [[SMAsyncLabel alloc] init];
@@ -87,16 +73,17 @@
         label.preferredMaxLayoutWidth = 200;
         label.text = test;
         label.textColor = [UIColor whiteColor];
-//        label.numberOfLines = 4;
+        label.numberOfLines = 2;
         label.backgroundColor = [UIColor greenColor];
         [self.view addSubview:label];
         
        [label mas_makeConstraints:^(MASConstraintMaker *make) {
              make.center.equalTo(self.view);
         }];
-        
+
         
     }
+    
 }
 
 

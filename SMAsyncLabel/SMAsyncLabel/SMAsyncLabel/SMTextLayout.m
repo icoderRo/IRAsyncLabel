@@ -8,7 +8,7 @@
 
 #import "SMTextLayout.h"
 #import <CoreText/CoreText.h>
-
+const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
 @interface SMTextLayout ()
 //@property (nonatomic,strong) SMTextContainer *container;
 //@property (nonatomic,strong) NSAttributedString *text;
@@ -29,7 +29,25 @@
     CGRect boundingBox = CGPathGetBoundingBox(containerPath);
     
     // calculate  bounding size
-    CGSize constraints = CGSizeMake(boundingBox.size.width, MAXFLOAT);
+    CGSize constraints = CGSizeMake(boundingBox.size.width, SMTextContainerMaxSize.height);
+    if (container.numberOfLines > 0) {
+        CGMutablePathRef npath = CGPathCreateMutable();
+        CGPathAddRect(npath, NULL, CGRectMake(0.0f, 0.0f, constraints.width, constraints.height));
+        CTFrameRef nframe = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), npath, NULL);
+        CFArrayRef nlines = CTFrameGetLines(nframe);
+        
+        if (CFArrayGetCount(nlines) > 0) {
+            NSInteger nindex = MIN((CFIndex)container.numberOfLines, CFArrayGetCount(nlines)) -1;
+            CTLineRef nline = CFArrayGetValueAtIndex(nlines, nindex);
+            CFRange nrange = CTLineGetStringRange(nline);
+            
+            range = CFRangeMake(0, nrange.location + nrange.length);
+        }
+        
+        CFRelease(nframe);
+        CFRelease(npath);
+    }
+    
     CGSize suggestSize = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, range, NULL, constraints, NULL);
     CGSize size = CGSizeMake(ceil(suggestSize.width), ceil(suggestSize.height));
     
@@ -110,6 +128,7 @@
     layout->_text = text.mutableCopy;
     layout->_linesArray = linesArray;
     layout->_size = size;
+    layout->_rowCount = rowCount;
     // TODO: setting more ....
     
     CFRelease(frameSetter);
