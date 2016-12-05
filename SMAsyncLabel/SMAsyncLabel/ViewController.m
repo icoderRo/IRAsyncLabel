@@ -82,18 +82,20 @@
     
     {
         SMAsyncLabel *label = [[SMAsyncLabel alloc] init];
-        NSString *test = @"Hello, World! I know nothing in the world that 😭❤️我们has as一样的 much power as a word. Sometimes I write one, and I look at it, until it begins to shine.🙂😢🙂😢🙂😢哈哈哈哈哈哈weixiasd";
-        label.font = [UIFont systemFontOfSize:20];
+        NSString *test = @"Hello, World! I know nothing in the world that 😭❤️我们has as一样的 much power as a word. Sometimes I write one, and I look at it, until it begins to shine.🙂😢🙂😢🙂😢哈哈哈哈哈哈weixiasd大师傅";
+        label.font = [UIFont systemFontOfSize:22];
+        label.preferredMaxLayoutWidth = 200;
         label.text = test;
         label.textColor = [UIColor whiteColor];
-        label.preferredMaxLayoutWidth = 200;
-        label.numberOfLines = 0;
+//        label.numberOfLines = 4;
         label.backgroundColor = [UIColor greenColor];
         [self.view addSubview:label];
         
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+       [label mas_makeConstraints:^(MASConstraintMaker *make) {
              make.center.equalTo(self.view);
         }];
+        
+        
     }
 }
 

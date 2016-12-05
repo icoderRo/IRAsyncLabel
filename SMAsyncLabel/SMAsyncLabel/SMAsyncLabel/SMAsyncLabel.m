@@ -46,19 +46,18 @@
 - (SMLayerDisplayTask *)displayTask {
     
     SMLayerDisplayTask *task = [[SMLayerDisplayTask alloc] init];
-   
+    
     // remove attachment
     task.willDisplay = ^(CALayer *layer) {
         
     };
     
     task.display = ^(CGContextRef context, CGSize size, BOOL (^isCancelled)(void)) {
-        NSLog(@"%i", self.layoutNeedUpdate);
         if (self.layoutNeedUpdate) {
             SMTextContainer *textContainer = [SMTextContainer sm_textContainerWithSize:self.frame.size];
             _textLayout = [SMTextLayout sm_layoutWithContainer:textContainer text:_attrs];
         }
-       
+        
         CGPoint point = CGPointZero;
         
         [_textLayout sm_drawInContext:context size:_textLayout.size point:point cancel:isCancelled];
@@ -89,6 +88,7 @@
     }
     
     [self.layer setNeedsDisplay];
+    [self invalidateIntrinsicContentSize];
 }
 
 
@@ -98,6 +98,7 @@
     _attrs = attributedText.mutableCopy;
     
     [self.layer setNeedsDisplay];
+    [self invalidateIntrinsicContentSize];
 }
 
 - (void)setFont:(UIFont *)font {
@@ -107,6 +108,7 @@
     if (_attrs.length) {
         NSRange range = NSMakeRange(0, _attrs.length);
         [_attrs setFont:_font range:range];
+        [self invalidateIntrinsicContentSize];
     }
 }
 
@@ -124,36 +126,32 @@
     _textLayout = textLayout;
     _layoutNeedUpdate = NO;
     [self.layer setNeedsDisplay];
+    [self invalidateIntrinsicContentSize];
 }
 
 - (void)setPreferredMaxLayoutWidth:(CGFloat)preferredMaxLayoutWidth {
     if (_preferredMaxLayoutWidth == preferredMaxLayoutWidth) return;
     _preferredMaxLayoutWidth = preferredMaxLayoutWidth;
-     [self invalidateIntrinsicContentSize];
+    [self invalidateIntrinsicContentSize];
 }
 
 - (void)setNumberOfLines:(NSUInteger)numberOfLines {
-//    if (_numberOfLines == numberOfLines) return;
     _numberOfLines = numberOfLines;
-
+    
     if (_attrs.length) {
         [self.layer setNeedsDisplay];
         [self invalidateIntrinsicContentSize];
     }
 }
 - (CGSize)intrinsicContentSize {
-    if (_preferredMaxLayoutWidth == 0) {
-        return CGSizeZero;
-    }
+    if (_preferredMaxLayoutWidth == 0) return CGSizeZero;
     
     CGSize containerSize;
     containerSize.height = CGFLOAT_MAX;
     containerSize.width = _preferredMaxLayoutWidth;
     if (containerSize.width == 0) containerSize.width = self.bounds.size.width;
     
-    
-    SMTextContainer *textContainer = [SMTextContainer sm_textContainerWithSize:self.frame.size];
-    
+    SMTextContainer *textContainer = [SMTextContainer sm_textContainerWithSize:containerSize];
     SMTextLayout *layout = [SMTextLayout sm_layoutWithContainer:textContainer text:_attrs];
     return layout.size;
 }

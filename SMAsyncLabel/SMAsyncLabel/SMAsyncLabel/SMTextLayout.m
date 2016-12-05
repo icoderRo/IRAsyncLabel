@@ -32,7 +32,7 @@
     CGSize constraints = CGSizeMake(boundingBox.size.width, MAXFLOAT);
     CGSize suggestSize = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, range, NULL, constraints, NULL);
     CGSize size = CGSizeMake(ceil(suggestSize.width), ceil(suggestSize.height));
-    NSLog(@"%@", NSStringFromCGSize(size));
+    
     // addRect
     CGMutablePathRef path = CGPathCreateMutable();
     CGRect rect = {boundingBox.origin,{boundingBox.size.width, size.height}};
