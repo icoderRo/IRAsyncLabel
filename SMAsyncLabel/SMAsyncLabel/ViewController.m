@@ -7,85 +7,58 @@
 //
 
 #import "ViewController.h"
-#import "SMAsyncLabel.h"
-#import "Masonry.h"
-#import "SMTextContainer.h"
+#import "SMAsyncLabeCreateViewController.h"
 
-@interface ViewController ()
+
+@interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, strong) NSMutableArray *array;
+@property (nonatomic, strong) UITableView *tableView;
 
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+ 
+    self.array = [NSMutableArray array];
+    self.title = @"demo";
+    [self.array addObject:@{ @"Create Method" : @"SMAsyncLabeCreateViewController"}];
     
-    SMAsyncLabel *label = [[SMAsyncLabel alloc] initWithFrame:CGRectMake(10, 20, 200, 300)];
-    NSString *test = @"Hello, World! I know nothing in the world that 😭❤️我们has as一样的 much power as a word. Sometimes I write one, and I look at it, until it begins to shine.🙂😢🙂😢🙂😢哈哈哈哈哈哈weixiasd";
-    label.font = [UIFont systemFontOfSize:20];
-    label.text = test;
-    label.textColor = [UIColor greenColor];
-    label.backgroundColor = [UIColor redColor];
-    [self.view addSubview:label];
-    
-    
-    SMAsyncLabel *label1 = [[SMAsyncLabel alloc] init];
-    
-    NSString *test1 = @"Hello, World! I know nothing in the world that 😭❤️我们has as一样的 much power as a word. Sometimes I write one, and I look at it, until it begins to shine.🙂😢🙂😢🙂😢哈哈哈哈哈哈weixiasd    sdafasgdhfjg!!!!!!!!!!!!Hello, World! I know nothing in the world that 😭❤️我们has as一样的 much power as a word. Sometimes I write one, and I look at it, until it begins to shine.🙂😢🙂😢🙂😢哈哈哈哈哈哈weixiasd    sdafasgdhfjg!!!!!!!!!!!!";
-    label1.backgroundColor = [UIColor yellowColor];
-    label1.textColor = [UIColor blueColor];
-    label1.text = test1;
-    label1.font = [UIFont systemFontOfSize:22];
-    [self.view addSubview:label1];
-    
-    [label1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(label.mas_right).offset(0);
-        make.top.equalTo(label).offset(10);
-        make.width.equalTo(@(200));
-        make.bottom.equalTo(self.view).offset(-200);
-    }];
-    
-    {
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            NSMutableAttributedString *attrs = [[NSMutableAttributedString alloc] initWithString:test1];
-            [attrs setTextColor:[UIColor whiteColor] range:NSMakeRange(0, attrs.length)];
-            SMTextContainer *textContainer = [SMTextContainer sm_textContainerWithSize:CGSizeMake(200, 200)];
-            textContainer.numberOfLines = 3;
-            SMTextLayout *textLayout = [SMTextLayout sm_layoutWithContainer:textContainer text:attrs];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                SMAsyncLabel *label = [SMAsyncLabel new];
-                label.textLayout = textLayout;
-                label.frame = CGRectMake(10, 400,textLayout.size.width, textLayout.size.height);
-                label.backgroundColor = [UIColor grayColor];
-                [self.view addSubview:label];
-            });
-            
-        });
-    }
-    
-    
-    
-    {
-        SMAsyncLabel *label = [[SMAsyncLabel alloc] init];
-        NSString *test = @"Hello, World! I know nothing in the world that 😭❤️我们has as一样的 much power as a word. Sometimes I write one, and I look at it, until it begins to shine.🙂😢🙂😢🙂😢哈哈哈哈哈哈weixiasd大师傅";
-        label.font = [UIFont systemFontOfSize:22];
-        label.preferredMaxLayoutWidth = 200;
-        label.text = test;
-        label.textColor = [UIColor whiteColor];
-        label.numberOfLines = 2;
-        label.backgroundColor = [UIColor greenColor];
-        [self.view addSubview:label];
-        
-       [label mas_makeConstraints:^(MASConstraintMaker *make) {
-             make.center.equalTo(self.view);
-        }];
-
-        
-    }
-    
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.view addSubview:self.tableView];
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.array.count;
+}
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ID"];
+    
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ID"];
+    }
+    
+    NSDictionary *dict = self.array[indexPath.row];
+    NSString *text = dict.allKeys.lastObject;
+    cell.textLabel.text = text;
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSDictionary *dict = self.array[indexPath.row];
+    NSString *className = dict.allValues.lastObject;
+    Class class = NSClassFromString(className);
+    if (class) {
+        UIViewController *ctrl = class.new;
+        ctrl.title = dict.allKeys.lastObject;
+        [self.navigationController pushViewController:ctrl animated:YES];
+    }
+}
 
 @end

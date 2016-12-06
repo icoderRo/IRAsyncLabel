@@ -9,8 +9,6 @@
 #import "SMTextContainer.h"
 
 @interface SMTextContainer ()
-@property (nonatomic,assign) CGSize size;
-@property (nonatomic,strong) UIBezierPath *path;
 @end
 
 @implementation SMTextContainer
@@ -19,6 +17,14 @@
     if (self = [super init]) {
     }
     return self;
+}
+
+- (void)setSize:(CGSize)size {
+    
+    _size = size;
+    UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)];
+    _path = path;
+    
 }
 
 + (instancetype)sm_textContainerWithSize:(CGSize)size {

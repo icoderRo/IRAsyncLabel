@@ -8,11 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SMTextContainer : NSObject
+typedef NS_ENUM (NSUInteger, SMTextTruncationType) {
+    /// No truncate.
+    SMTextTruncationTypeNone = 0,
+    SMTextTruncationTypeStart,
+    SMTextTruncationTypeEnd,
+    SMTextTruncationTypeMiddle,
+};
 
-@property (nonatomic,strong,readonly) UIBezierPath *path;
-@property (nonatomic,assign,readonly) CGSize size;
-@property (nonatomic) NSUInteger numberOfLines;
+@interface SMTextContainer : NSObject <NSCopying>
+
+@property (nonatomic, strong) UIBezierPath *path;
+@property (nonatomic, assign) CGSize size;
+@property (nonatomic, assign) NSUInteger numberOfLines;
+@property (nonatomic, assign) SMTextTruncationType truncationType;
 
 + (instancetype)sm_textContainerWithSize:(CGSize)size;
 + (instancetype)sm_textContainerWithSize:(CGSize)size numberOfLines:(NSUInteger)numberOfLines;

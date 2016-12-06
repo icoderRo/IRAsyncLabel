@@ -19,6 +19,8 @@ const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
 #pragma mark - Init
 + (instancetype)sm_layoutWithContainer:(SMTextContainer *)container text:(NSAttributedString *)text {
     
+    BOOL needTruncation = NO;
+    
     if (!text || !container) return nil;
     
     // CTFrameRef
@@ -120,6 +122,31 @@ const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
             textBoundRect = CGRectUnion(textBoundRect, lineRect);
         }
     }
+    
+    // Truncation
+    if (rowCount) {
+        if (container.numberOfLines > 0) {
+            if (rowCount > container.numberOfLines) {
+                rowCount = (int)container.numberOfLines;
+            }
+            do {
+                SMTextLine *line = linesArray.lastObject;
+                if (!line) break;
+                if (line.row < rowCount) break;
+                [linesArray removeLastObject];
+            } while (1);
+        }
+        
+        SMTextLine *lastLine = linesArray.lastObject;
+        if (!needTruncation && lastLine.range.location + lastLine.range.length < text.length) {
+            needTruncation = YES;
+        }
+        
+        // to be continued ...
+        
+        
+    }
+    
 
     // Setter
     SMTextLayout *layout = [[SMTextLayout alloc] init];

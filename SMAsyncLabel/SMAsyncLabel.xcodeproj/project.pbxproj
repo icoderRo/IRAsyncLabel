@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F42AC9221DF5739C00B0425B /* SMAsyncLabeCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F42AC9211DF5739C00B0425B /* SMAsyncLabeCreateViewController.m */; };
 		F453F3A21DF1475300E598FF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F453F3881DF1475300E598FF /* Info.plist */; };
 		F453F3A31DF1475300E598FF /* MASCompositeConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = F453F38A1DF1475300E598FF /* MASCompositeConstraint.m */; };
 		F453F3A41DF1475300E598FF /* MASConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = F453F38D1DF1475300E598FF /* MASConstraint.m */; };
@@ -21,7 +22,6 @@
 		F46AF4681DE6EEEA0067BBA7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F46AF4671DE6EEEA0067BBA7 /* main.m */; };
 		F46AF46B1DE6EEEA0067BBA7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F46AF46A1DE6EEEA0067BBA7 /* AppDelegate.m */; };
 		F46AF46E1DE6EEEA0067BBA7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F46AF46D1DE6EEEA0067BBA7 /* ViewController.m */; };
-		F46AF4711DE6EEEA0067BBA7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F46AF46F1DE6EEEA0067BBA7 /* Main.storyboard */; };
 		F46AF4731DE6EEEA0067BBA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F46AF4721DE6EEEA0067BBA7 /* Assets.xcassets */; };
 		F46AF4761DE6EEEA0067BBA7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F46AF4741DE6EEEA0067BBA7 /* LaunchScreen.storyboard */; };
 		F46AF4801DE6EF1F0067BBA7 /* SMAsyncLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F46AF47F1DE6EF1F0067BBA7 /* SMAsyncLayer.m */; };
@@ -32,6 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F42AC9201DF5739C00B0425B /* SMAsyncLabeCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAsyncLabeCreateViewController.h; sourceTree = "<group>"; };
+		F42AC9211DF5739C00B0425B /* SMAsyncLabeCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAsyncLabeCreateViewController.m; sourceTree = "<group>"; };
 		F453F3881DF1475300E598FF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F453F3891DF1475300E598FF /* MASCompositeConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASCompositeConstraint.h; sourceTree = "<group>"; };
 		F453F38A1DF1475300E598FF /* MASCompositeConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASCompositeConstraint.m; sourceTree = "<group>"; };
@@ -64,7 +66,6 @@
 		F46AF46A1DE6EEEA0067BBA7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		F46AF46C1DE6EEEA0067BBA7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		F46AF46D1DE6EEEA0067BBA7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		F46AF4701DE6EEEA0067BBA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F46AF4721DE6EEEA0067BBA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F46AF4751DE6EEEA0067BBA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F46AF4771DE6EEEA0067BBA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -91,6 +92,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F42AC91F1DF5735B00B0425B /* sample */ = {
+			isa = PBXGroup;
+			children = (
+				F42AC9201DF5739C00B0425B /* SMAsyncLabeCreateViewController.h */,
+				F42AC9211DF5739C00B0425B /* SMAsyncLabeCreateViewController.m */,
+			);
+			name = sample;
+			path = "未命名文件夹";
+			sourceTree = "<group>";
+		};
 		F453F3871DF1475300E598FF /* Masonry */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,7 +160,7 @@
 				F46AF46A1DE6EEEA0067BBA7 /* AppDelegate.m */,
 				F46AF46C1DE6EEEA0067BBA7 /* ViewController.h */,
 				F46AF46D1DE6EEEA0067BBA7 /* ViewController.m */,
-				F46AF46F1DE6EEEA0067BBA7 /* Main.storyboard */,
+				F42AC91F1DF5735B00B0425B /* sample */,
 				F46AF4721DE6EEEA0067BBA7 /* Assets.xcassets */,
 				F46AF4741DE6EEEA0067BBA7 /* LaunchScreen.storyboard */,
 				F46AF4771DE6EEEA0067BBA7 /* Info.plist */,
@@ -244,7 +255,6 @@
 				F453F3A21DF1475300E598FF /* Info.plist in Resources */,
 				F46AF4761DE6EEEA0067BBA7 /* LaunchScreen.storyboard in Resources */,
 				F46AF4731DE6EEEA0067BBA7 /* Assets.xcassets in Resources */,
-				F46AF4711DE6EEEA0067BBA7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +267,7 @@
 			files = (
 				F46AF4801DE6EF1F0067BBA7 /* SMAsyncLayer.m in Sources */,
 				F46AF4831DE6F00B0067BBA7 /* SMTextLayout.m in Sources */,
+				F42AC9221DF5739C00B0425B /* SMAsyncLabeCreateViewController.m in Sources */,
 				F453F3A91DF1475300E598FF /* NSArray+MASAdditions.m in Sources */,
 				F46AF4861DE6F06A0067BBA7 /* SMTextContainer.m in Sources */,
 				F46AF46E1DE6EEEA0067BBA7 /* ViewController.m in Sources */,
@@ -279,14 +290,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		F46AF46F1DE6EEEA0067BBA7 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F46AF4701DE6EEEA0067BBA7 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		F46AF4741DE6EEEA0067BBA7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

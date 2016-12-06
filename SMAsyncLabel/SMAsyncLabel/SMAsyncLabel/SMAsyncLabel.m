@@ -1,6 +1,6 @@
 //
 //  SMAsyncLabel.m
-//  SMAsyncLabel
+//  SMAsyncLabel <https://github.com/icoderRo/SMAsyncLabel>
 //
 //  Created by simon on 16/11/25.
 //  Copyright © 2016年 simon. All rights reserved.
@@ -14,6 +14,9 @@
 @property (nonatomic, copy) NSMutableAttributedString *attrs;
 /// if has textLayout, then no need layout
 @property (nonatomic, assign) BOOL layoutNeedUpdate;
+
+@property (nonatomic, strong) SMTextContainer *container;
+
 
 @end
 
@@ -38,6 +41,9 @@
     
     _font = [UIFont systemFontOfSize:15.0f];
     _layoutNeedUpdate = YES;
+    
+    _container = [[SMTextContainer alloc] init];
+    _container.size = self.frame.size;
 }
 
 
@@ -53,8 +59,8 @@
     
     task.display = ^(CGContextRef context, CGSize size, BOOL (^isCancelled)(void)) {
         if (self.layoutNeedUpdate) {
-            SMTextContainer *textContainer = [SMTextContainer sm_textContainerWithSize:self.frame.size numberOfLines:_numberOfLines];
-            _textLayout = [SMTextLayout sm_layoutWithContainer:textContainer text:_attrs];
+            _container.size = size;
+            _textLayout = [SMTextLayout sm_layoutWithContainer:_container text:_attrs];
         }
         
         CGPoint point = CGPointZero;
@@ -92,7 +98,7 @@
 
 
 - (void)setAttributedText:(NSMutableAttributedString *)attributedText {
-    if (attributedText.length <=0 || _attributedText == attributedText) return;
+    if (attributedText.length <= 0 || _attributedText == attributedText) return;
     
     _attrs = attributedText.mutableCopy;
     
@@ -120,6 +126,44 @@
     [self.attrs setTextColor:_textColor range:range];
 }
 
+- (void)setTextAlignment:(NSTextAlignment)textAlignment {
+    if (_textAlignment == textAlignment) return;
+    
+    _textAlignment = textAlignment;
+    NSRange range = NSMakeRange(0, _attrs.length);
+    [self.attrs setTextAlignment:_textAlignment range:range];
+}
+
+- (void)setLineBreakMode:(NSLineBreakMode)lineBreakMode {
+    if (lineBreakMode == _lineBreakMode) return;
+    _lineBreakMode = lineBreakMode;
+    NSRange range = NSMakeRange(0, _attrs.length);
+    
+    switch (lineBreakMode) {
+        case NSLineBreakByWordWrapping:
+        case NSLineBreakByCharWrapping:
+        case NSLineBreakByClipping:{
+            _container.truncationType = SMTextTruncationTypeNone;
+            [self.attrs setLineBreakMode:lineBreakMode range:range];
+        }
+            break;
+        case NSLineBreakByTruncatingHead:{
+            _container.truncationType = SMTextTruncationTypeStart;
+            [self.attrs setLineBreakMode:NSLineBreakByWordWrapping range:range];
+        } break;
+        case NSLineBreakByTruncatingTail:{
+            _container.truncationType = SMTextTruncationTypeEnd;
+            [self.attrs setLineBreakMode:NSLineBreakByWordWrapping range:range];
+        } break;
+        case NSLineBreakByTruncatingMiddle: {
+            _container.truncationType = SMTextTruncationTypeMiddle;
+            [self.attrs setLineBreakMode:NSLineBreakByWordWrapping range:range];
+        } break;
+        default:
+            break;
+    }
+}
+
 - (void)setTextLayout:(SMTextLayout *)textLayout {
     if (_textLayout == textLayout) return;
     _textLayout = textLayout;
@@ -138,25 +182,31 @@
     if (_numberOfLines == numberOfLines) return;
     
     _numberOfLines = numberOfLines;
-    
+    _container.numberOfLines = _numberOfLines;
     if (_attrs.length) {
         [self.layer setNeedsDisplay];
         [self invalidateIntrinsicContentSize];
     }
 }
+
 - (CGSize)intrinsicContentSize {
-    if (_preferredMaxLayoutWidth == 0) return CGSizeZero;
+    if (_preferredMaxLayoutWidth == 0) {
+        _container.size = SMTextContainerMaxSize;
+        SMTextLayout *layout = [SMTextLayout sm_layoutWithContainer:_container text:_attrs];
+        
+        return layout.size;
+    };
     
     CGSize containerSize;
     containerSize.height = SMTextContainerMaxSize.height;
     containerSize.width = _preferredMaxLayoutWidth;
     if (containerSize.width == 0) containerSize.width = self.bounds.size.width;
     
-    SMTextContainer *textContainer = [SMTextContainer sm_textContainerWithSize:containerSize numberOfLines:_numberOfLines];
-    SMTextLayout *layout = [SMTextLayout sm_layoutWithContainer:textContainer text:_attrs];
+    _container.size = containerSize;
+    SMTextLayout *layout = [SMTextLayout sm_layoutWithContainer:_container text:_attrs];
+
     return layout.size;
 }
-
 
 @end
 
@@ -169,6 +219,46 @@
 
 - (void)setTextColor:(UIColor *)textColor range:(NSRange)range {
     [self setAttribute:NSForegroundColorAttributeName value:textColor range:range];
+}
+
+- (void)setTextAlignment:(NSTextAlignment)textAlignment range:(NSRange)range {
+    [self enumerateAttribute:NSParagraphStyleAttributeName
+                     inRange:range
+                     options:kNilOptions
+                  usingBlock: ^(NSParagraphStyle *value, NSRange subRange, BOOL *stop) {
+                      if (value) {
+                          NSMutableParagraphStyle *style = value.mutableCopy;
+                          [style setAlignment:textAlignment];
+                          [self setParagraphStyle:style range:subRange];
+                      }
+                      else {
+                          NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+                          [style setAlignment:textAlignment];
+                          [self setParagraphStyle:style range:subRange];
+                      }
+                  }];
+}
+
+- (void)setLineBreakMode:(NSLineBreakMode)lineBreakMode range:(NSRange)range {
+    [self enumerateAttribute:NSParagraphStyleAttributeName
+                     inRange:range
+                     options:kNilOptions
+                  usingBlock: ^(NSParagraphStyle *value, NSRange subRange, BOOL *stop) {
+                      if (value) {
+                          NSMutableParagraphStyle *style = value.mutableCopy;
+                          [style setLineBreakMode:lineBreakMode];
+                          [self setParagraphStyle:style range:subRange];
+                      }
+                      else {
+                          NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+                          [style setLineBreakMode:lineBreakMode];
+                          [self setParagraphStyle:style range:subRange];
+                      }
+                  }];
+}
+
+- (void)setParagraphStyle:(NSParagraphStyle *)paragraphStyle range:(NSRange)range {
+    [self setAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:range];
 }
 
 - (void)setAttribute:(NSString *)name value:(id)value range:(NSRange)range {
