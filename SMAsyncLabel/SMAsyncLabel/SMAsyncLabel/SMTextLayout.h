@@ -12,6 +12,7 @@
 extern const CGSize SMTextContainerMaxSize;
 @interface SMTextLayout : NSObject
 @property (nonatomic, strong, readonly) SMTextContainer *container;
+@property (nonatomic, strong, readonly) SMTextLine *truncatedLine;
 @property (nonatomic, strong, readonly) NSAttributedString *text;
 @property (nonatomic, copy) NSArray *textArray;
 @property (nonatomic, strong, readonly) NSArray<SMTextLine *> *linesArray;

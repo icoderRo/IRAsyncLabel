@@ -20,7 +20,7 @@ const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
 + (instancetype)sm_layoutWithContainer:(SMTextContainer *)container text:(NSAttributedString *)text {
     
     BOOL needTruncation = NO;
-    
+    SMTextLine *truncatedLine = nil;
     if (!text || !container) return nil;
     
     // CTFrameRef
@@ -141,13 +141,85 @@ const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
         if (!needTruncation && lastLine.range.location + lastLine.range.length < text.length) {
             needTruncation = YES;
         }
+    }
+    // to be continued ...
+    
+    CFRange crange = CTFrameGetVisibleStringRange(frame);
+    NSRange visibleRange = NSMakeRange(crange.location, crange.length);
+    
+    if (needTruncation) {
+        SMTextLine *lastLine = linesArray.lastObject;
+        NSRange lastRange = lastLine.range;
+        visibleRange.length = lastRange.location + lastRange.length - visibleRange.location;
         
-        // to be continued ...
-        
-        
+        // create truncated line
+        if (container.truncationType != SMTextTruncationTypeNone) {
+            CTLineRef truncationTokenLine = NULL;
+            CFArrayRef runs = CTLineGetGlyphRuns(lastLine.CTLine);
+            NSUInteger runCount = CFArrayGetCount(runs);
+            NSMutableDictionary *attrs = nil;
+            if (runCount > 0) {
+                CTRunRef run = CFArrayGetValueAtIndex(runs, runCount - 1);
+                attrs = (id)CTRunGetAttributes(run);
+                attrs = attrs ? attrs.mutableCopy : [NSMutableArray new];
+                
+                NSArray *keys = @[(id)kCTSuperscriptAttributeName,
+                                  (id)kCTRunDelegateAttributeName,
+                                  (id)NSAttachmentAttributeName];
+                
+                [attrs removeObjectsForKeys:keys];
+                CTFontRef font = (__bridge CFTypeRef)attrs[(id)kCTFontAttributeName];
+                CGFloat fontSize = font ? CTFontGetSize(font) : 12.0;
+                UIFont *uiFont = [UIFont systemFontOfSize:fontSize * 0.9];
+                font = CTFontCreateWithName((__bridge CFStringRef)uiFont.fontName, uiFont.pointSize, NULL);
+                if (font) {
+                    attrs[(id)kCTFontAttributeName] = (__bridge id)(font);
+                    uiFont = nil;
+                    CFRelease(font);
+                }
+                CGColorRef color = (__bridge CGColorRef)(attrs[(id)kCTForegroundColorAttributeName]);
+                if (color && CFGetTypeID(color) == CGColorGetTypeID() && CGColorGetAlpha(color) == 0) {
+                    [attrs removeObjectForKey:(id)kCTForegroundColorAttributeName];
+                }
+                if (!attrs) attrs = [NSMutableDictionary new];
+            }
+            NSAttributedString *truncationToken = [[NSAttributedString alloc] initWithString:@"..." attributes:attrs];
+            truncationTokenLine = CTLineCreateWithAttributedString((CFAttributedStringRef)truncationToken);
+            //                }
+            if (truncationTokenLine) {
+                CTLineTruncationType type = kCTLineTruncationEnd;
+                if (container.truncationType == SMTextTruncationTypeStart) {
+                    type = kCTLineTruncationStart;
+                } else if (container.truncationType == SMTextTruncationTypeMiddle) {
+                    type = kCTLineTruncationMiddle;
+                }
+                NSMutableAttributedString *lastLineText = [text attributedSubstringFromRange:lastLine.range].mutableCopy;
+                [lastLineText appendAttributedString:truncationToken];
+                CTLineRef ctLastLineExtend = CTLineCreateWithAttributedString((CFAttributedStringRef)lastLineText);
+                if (ctLastLineExtend) {
+                    CGFloat truncatedWidth = lastLine.width;
+                    CGRect cgPathRect = CGRectZero;
+                    if (CGPathIsRect(path, &cgPathRect)) {
+                        
+                        truncatedWidth = cgPathRect.size.width;
+                        
+                    }
+                    CTLineRef ctTruncatedLine = CTLineCreateTruncatedLine(ctLastLineExtend, truncatedWidth, type, truncationTokenLine);
+                    CFRelease(ctLastLineExtend);
+                    if (ctTruncatedLine) {
+                        truncatedLine =  [SMTextLine sm_textLineWithCTLine:ctTruncatedLine lineOrigin:lastLine.lineOrigin];
+                        truncatedLine.index = lastLine.index;
+                        truncatedLine.row = lastLine.row;
+                        CFRelease(ctTruncatedLine);
+                    }
+                }
+                CFRelease(truncationTokenLine);
+            }
+        }
     }
     
-
+    
+    
     // Setter
     SMTextLayout *layout = [[SMTextLayout alloc] init];
     layout->_needDrawText = YES;
@@ -156,6 +228,7 @@ const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
     layout->_linesArray = linesArray;
     layout->_size = size;
     layout->_rowCount = rowCount;
+    layout->_truncatedLine = truncatedLine;
     // TODO: setting more ....
     
     CFRelease(frameSetter);
@@ -167,17 +240,17 @@ const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
 
 #pragma mark - Draw
 - (void)sm_drawInContext:(CGContextRef)context
-                 size:(CGSize)size
-                point:(CGPoint)point
-               cancel:(BOOL (^)(void))cancel {
+                    size:(CGSize)size
+                   point:(CGPoint)point
+                  cancel:(BOOL (^)(void))cancel {
     
     
     
     if (self.needDrawText && context) {
         if (cancel && cancel()) return;
         SMTextDrawText(self, context, size, point, cancel);
-//        SMTextDrawFrameText(context, self, size, point, cancel);
-
+        //        SMTextDrawFrameText(context, self, size, point, cancel);
+        
     }
 }
 
@@ -188,8 +261,16 @@ static void SMTextDrawText(SMTextLayout *layout, CGContextRef context, CGSize si
         CGContextTranslateCTM(context, 0, size.height);
         CGContextScaleCTM(context, 1, -1);
         
-        for (SMTextLine *line in layout.linesArray) {
+        //        for (SMTextLine *line in layout.linesArray)
+        
+        
+        for (NSUInteger i = 0; i < layout.linesArray.count; i++) {
+            
             if (cancel && cancel()) break;
+            SMTextLine *line = layout.linesArray[i];
+            if (layout.truncatedLine && layout.truncatedLine.index == line.index) {
+                line = layout.truncatedLine;
+            }
             
             CGContextSetTextMatrix(context, CGAffineTransformIdentity);
             CGContextSetTextPosition(context, line.lineOrigin.x, size.height - line.lineOrigin.y);
@@ -223,7 +304,7 @@ static void SMTextDrawFrameText(CGContextRef context, SMTextLayout *layout, CGSi
         
         CFRange cfRange = CFRangeMake(0, (CFIndex)[layout.text length]);
         CFAttributedStringSetAttribute((CFMutableAttributedStringRef)layout.text, cfRange, kCTBackgroundColorAttributeName, red);
-
+        
         CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString((CFTypeRef)layout.text);
         
         CGMutablePathRef path = CGPathCreateMutable();

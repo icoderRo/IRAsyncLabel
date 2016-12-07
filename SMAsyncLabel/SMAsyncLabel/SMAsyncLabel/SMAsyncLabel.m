@@ -138,6 +138,7 @@
     if (lineBreakMode == _lineBreakMode) return;
     _lineBreakMode = lineBreakMode;
     NSRange range = NSMakeRange(0, _attrs.length);
+//    [self.attrs setLineBreakMode:lineBreakMode range:range];
     
     switch (lineBreakMode) {
         case NSLineBreakByWordWrapping:
@@ -162,6 +163,9 @@
         default:
             break;
     }
+    
+    [self.layer setNeedsDisplay];
+    [self invalidateIntrinsicContentSize];
 }
 
 - (void)setTextLayout:(SMTextLayout *)textLayout {
@@ -204,7 +208,7 @@
     
     _container.size = containerSize;
     SMTextLayout *layout = [SMTextLayout sm_layoutWithContainer:_container text:_attrs];
-
+    
     return layout.size;
 }
 

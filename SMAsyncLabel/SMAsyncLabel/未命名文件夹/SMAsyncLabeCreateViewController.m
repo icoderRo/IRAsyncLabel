@@ -82,11 +82,10 @@
         label.preferredMaxLayoutWidth = 200;
         label.text = test2;
         label.textColor = [UIColor whiteColor];
-        //        label.numberOfLines = 20;
-        label.textAlignment = NSTextAlignmentRight;
+        label.numberOfLines = 5;
+        label.textAlignment = NSTextAlignmentLeft;
         label.backgroundColor = [UIColor greenColor];
         label.alpha = 0.99;
-        label.lineBreakMode = NSLineBreakByTruncatingMiddle;
         [self.view addSubview:label];
         
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
