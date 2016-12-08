@@ -29,6 +29,7 @@
     SMAsyncLabel *label = [[SMAsyncLabel alloc] initWithFrame:CGRectMake(10, 70, 200, 300)];
     label.font = [UIFont systemFontOfSize:20];
     label.text = test;
+    label.lineSpacing = 10;
     label.textColor = [UIColor greenColor];
     label.backgroundColor = [UIColor redColor];
     [self.view addSubview:label];
@@ -81,6 +82,8 @@
         label.font = [UIFont systemFontOfSize:22];
         label.preferredMaxLayoutWidth = 200;
         label.text = test2;
+        label.lineSpacing = 30;
+        label.characterSpacing = 5;
         label.textColor = [UIColor whiteColor];
         label.numberOfLines = 5;
         label.textAlignment = NSTextAlignmentLeft;

@@ -117,6 +117,22 @@
     }
 }
 
+- (void)setlineSpacing:(CGFloat)lineSpacing {
+    if (lineSpacing == _lineSpacing) return;
+    
+    _lineSpacing = lineSpacing;
+    NSRange range = NSMakeRange(0, _attrs.length);
+    [self.attrs setLineSpacing:_lineSpacing range:range];
+}
+
+- (void)setCharacterSpacing:(unichar)characterSpacing {
+    if (_characterSpacing == characterSpacing) return;
+    
+    _characterSpacing = characterSpacing;
+     NSRange range = NSMakeRange(0, _attrs.length);
+    [self.attrs setCharacterSpacing:_characterSpacing range:range];
+    
+}
 - (void)setTextColor:(UIColor *)textColor {
     if (!textColor) textColor = [UIColor blackColor];
     
@@ -259,6 +275,32 @@
                           [self setParagraphStyle:style range:subRange];
                       }
                   }];
+}
+
+- (void)setlineSpacing:(CGFloat)lineSpacing range:(NSRange)range {
+    [self enumerateAttribute:NSParagraphStyleAttributeName
+                     inRange:range
+                     options:kNilOptions
+                  usingBlock: ^(NSParagraphStyle *value, NSRange subRange, BOOL *stop) {
+                      if (value) {
+                          NSMutableParagraphStyle *style = value.mutableCopy;
+                          [style setLineSpacing:lineSpacing];
+                          [self setParagraphStyle:style range:subRange];
+                      }
+                      else {
+                          NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+                          [style setLineSpacing:lineSpacing];
+                          [self setParagraphStyle:style range:subRange];
+                      }
+                  }];
+}
+
+- (void)setCharacterSpacing:(unichar)characterSpacing range:(NSRange)range {
+    CFNumberRef charSpacingNum =  CFNumberCreate(kCFAllocatorDefault,kCFNumberSInt8Type,&characterSpacing);
+    if (charSpacingNum != nil) {
+        [self setAttribute:(NSString *)kCTKernAttributeName value:(__bridge id)charSpacingNum range:range];
+        CFRelease(charSpacingNum);
+    }
 }
 
 - (void)setParagraphStyle:(NSParagraphStyle *)paragraphStyle range:(NSRange)range {

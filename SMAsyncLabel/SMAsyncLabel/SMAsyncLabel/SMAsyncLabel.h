@@ -20,8 +20,9 @@
 @property (nonatomic, assign) NSUInteger numberOfLines;
 @property (nonatomic, assign) CGFloat preferredMaxLayoutWidth;
 @property (nonatomic, assign) NSTextAlignment textAlignment;
-@property (nonatomic, assign) NSLineBreakMode lineBreakMode;
-
+@property (nonatomic, assign) NSLineBreakMode lineBreakMode; // error
+@property (nonatomic, assign) CGFloat lineSpacing; // must set after test / attributedText
+@property (nonatomic, assign) unichar characterSpacing; // must set after test / attributedText
 
 @property (nullable, nonatomic, strong) SMTextLayout *textLayout;
 @end
@@ -31,6 +32,8 @@
 - (void)setTextColor:(nullable UIColor *)textColor range:(NSRange)range;
 - (void)setTextAlignment:(NSTextAlignment)textAlignment range:(NSRange)range;
 - (void)setLineBreakMode:(NSLineBreakMode)lineBreakMode range:(NSRange)range;
+- (void)setLineSpacing:(CGFloat)lineSpacing range:(NSRange)range;
+- (void)setCharacterSpacing:(unichar)characterSpacing range:(NSRange)range;;
 @end
 
 
