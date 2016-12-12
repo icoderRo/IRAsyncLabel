@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "SMAsyncLabeCreateViewController.h"
+#import "SMAttchmentViewController.h"
 
 
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -23,6 +24,7 @@
     self.array = [NSMutableArray array];
     self.title = @"demo";
     [self.array addObject:@{ @"Create Method" : @"SMAsyncLabeCreateViewController"}];
+    [self.array addObject:@{ @"attachment Method" : @"SMAttchmentViewController"}];
     
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame];
     self.tableView.delegate = self;

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		F42AC9221DF5739C00B0425B /* SMAsyncLabeCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F42AC9211DF5739C00B0425B /* SMAsyncLabeCreateViewController.m */; };
+		F44242971DF9453D002311FC /* SMTextAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = F44242961DF9453D002311FC /* SMTextAttribute.m */; };
+		F442429A1DF951DB002311FC /* SMAttchmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44242991DF951DB002311FC /* SMAttchmentViewController.m */; };
 		F453F3A21DF1475300E598FF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F453F3881DF1475300E598FF /* Info.plist */; };
 		F453F3A31DF1475300E598FF /* MASCompositeConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = F453F38A1DF1475300E598FF /* MASCompositeConstraint.m */; };
 		F453F3A41DF1475300E598FF /* MASConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = F453F38D1DF1475300E598FF /* MASConstraint.m */; };
@@ -34,6 +36,10 @@
 /* Begin PBXFileReference section */
 		F42AC9201DF5739C00B0425B /* SMAsyncLabeCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAsyncLabeCreateViewController.h; sourceTree = "<group>"; };
 		F42AC9211DF5739C00B0425B /* SMAsyncLabeCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAsyncLabeCreateViewController.m; sourceTree = "<group>"; };
+		F44242951DF9453D002311FC /* SMTextAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTextAttribute.h; sourceTree = "<group>"; };
+		F44242961DF9453D002311FC /* SMTextAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTextAttribute.m; sourceTree = "<group>"; };
+		F44242981DF951DB002311FC /* SMAttchmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAttchmentViewController.h; sourceTree = "<group>"; };
+		F44242991DF951DB002311FC /* SMAttchmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAttchmentViewController.m; sourceTree = "<group>"; };
 		F453F3881DF1475300E598FF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F453F3891DF1475300E598FF /* MASCompositeConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASCompositeConstraint.h; sourceTree = "<group>"; };
 		F453F38A1DF1475300E598FF /* MASCompositeConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASCompositeConstraint.m; sourceTree = "<group>"; };
@@ -97,6 +103,8 @@
 			children = (
 				F42AC9201DF5739C00B0425B /* SMAsyncLabeCreateViewController.h */,
 				F42AC9211DF5739C00B0425B /* SMAsyncLabeCreateViewController.m */,
+				F44242981DF951DB002311FC /* SMAttchmentViewController.h */,
+				F44242991DF951DB002311FC /* SMAttchmentViewController.m */,
 			);
 			name = sample;
 			path = "未命名文件夹";
@@ -190,6 +198,8 @@
 				F46AF4851DE6F06A0067BBA7 /* SMTextContainer.m */,
 				F4B590771DEBCB240075A472 /* SMTextLine.h */,
 				F4B590781DEBCB240075A472 /* SMTextLine.m */,
+				F44242951DF9453D002311FC /* SMTextAttribute.h */,
+				F44242961DF9453D002311FC /* SMTextAttribute.m */,
 			);
 			path = SMAsyncLabel;
 			sourceTree = "<group>";
@@ -266,6 +276,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F46AF4801DE6EF1F0067BBA7 /* SMAsyncLayer.m in Sources */,
+				F44242971DF9453D002311FC /* SMTextAttribute.m in Sources */,
 				F46AF4831DE6F00B0067BBA7 /* SMTextLayout.m in Sources */,
 				F42AC9221DF5739C00B0425B /* SMAsyncLabeCreateViewController.m in Sources */,
 				F453F3A91DF1475300E598FF /* NSArray+MASAdditions.m in Sources */,
@@ -281,6 +292,7 @@
 				F46AF4681DE6EEEA0067BBA7 /* main.m in Sources */,
 				F453F3A51DF1475300E598FF /* MASConstraintMaker.m in Sources */,
 				F453F3AC1DF1475300E598FF /* ViewController+MASAdditions.m in Sources */,
+				F442429A1DF951DB002311FC /* SMAttchmentViewController.m in Sources */,
 				F453F3A81DF1475300E598FF /* MASViewConstraint.m in Sources */,
 				F4C910371DE811BB00514987 /* SMAsyncLabel.m in Sources */,
 				F453F3A71DF1475300E598FF /* MASViewAttribute.m in Sources */,

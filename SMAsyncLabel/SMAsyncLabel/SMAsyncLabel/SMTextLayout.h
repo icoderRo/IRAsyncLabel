@@ -29,4 +29,6 @@ extern const CGSize SMTextContainerMaxSize;
                  size:(CGSize)size
                 point:(CGPoint)point
                cancel:(BOOL (^)(void))cancel;
+
++ (instancetype)new UNAVAILABLE_ATTRIBUTE; 
 @end
