@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
-@interface SMTextAttacment : NSObject<NSCopying, NSCoding>
+
+
+@interface SMTextAttachment : NSObject<NSCopying, NSCoding>
 
 + (instancetype)sm_attachmentWithContent:(nullable id)content;
 @property (nullable, nonatomic, strong) id content;
@@ -19,4 +20,3 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END

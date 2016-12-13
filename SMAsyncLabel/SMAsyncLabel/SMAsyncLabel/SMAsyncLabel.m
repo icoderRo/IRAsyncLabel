@@ -303,10 +303,32 @@
     }
 }
 
+
+//- (void)setTextAttachment:(SMTextAttacment *)textAttachment range:(NSRange)range {
+//    [self setAttribute:SMTextAttachmentAttributeName value:textAttachment range:range];
+//}
+
 - (void)setParagraphStyle:(NSParagraphStyle *)paragraphStyle range:(NSRange)range {
     [self setAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:range];
 }
 
+//+ (NSMutableAttributedString *)attachmentStringWithContent:(id)content
+//                                               contentMode:(UIViewContentMode)contentMode
+//                                                  userInfo:(NSDictionary *)userInfo
+//                                                     width:(CGFloat)width
+//                                                    ascent:(CGFloat)ascent
+//                                                   descent:(CGFloat)descent {
+//    
+//    NSMutableAttributedString *attrs = [[NSMutableAttributedString alloc] initWithString:SMTextAttachmentToken];
+//    SMTextAttachment *attach = [[SMTextAttachment alloc] init];
+//    attach.content = content;
+//    attach.contentMode = contentMode;
+//    attach.userInfo = userInfo;
+//    
+//    
+//}
+
+#pragma mark - Attribute
 - (void)setAttribute:(NSString *)name value:(id)value range:(NSRange)range {
     if (!name || [NSNull isEqual:name]){
         return;

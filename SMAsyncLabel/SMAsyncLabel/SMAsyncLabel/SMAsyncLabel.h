@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SMTextLayout.h"
+#import "SMTextAttribute.h"
 
 @interface SMAsyncLabel : UIView
 
@@ -33,7 +34,14 @@
 - (void)setTextAlignment:(NSTextAlignment)textAlignment range:(NSRange)range;
 - (void)setLineBreakMode:(NSLineBreakMode)lineBreakMode range:(NSRange)range;
 - (void)setLineSpacing:(CGFloat)lineSpacing range:(NSRange)range;
-- (void)setCharacterSpacing:(unichar)characterSpacing range:(NSRange)range;;
+- (void)setCharacterSpacing:(unichar)characterSpacing range:(NSRange)range;
+//- (void)setTextAttachment:(SMTextAttacment *)textAttachment range:(NSRange)range;
++ (NSMutableAttributedString *)attachmentStringWithContent:(id)content
+                                               contentMode:(UIViewContentMode)contentMode
+                                                  userInfo:(NSDictionary *)userInfo
+                                                     width:(CGFloat)width
+                                                    ascent:(CGFloat)ascent
+                                                   descent:(CGFloat)descent;
 @end
 
 

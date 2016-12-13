@@ -10,6 +10,7 @@
 #import "SMAsyncLabel.h"
 #import "Masonry.h"
 #import "SMTextContainer.h"
+#import "SMTextLayout.h"
 @interface SMAsyncLabeCreateViewController ()
 
 @end

@@ -7,10 +7,11 @@
 //
 
 #import "SMTextAttribute.h"
-
-@implementation SMTextAttacment
+NSString *const SMTextAttachmentAttributeName = @"SMTextAttachment";
+NSString *const SMTextAttachmentToken = @"\uFFFC";
+@implementation SMTextAttachment
 + (instancetype)sm_attachmentWithContent:(id)content {
-    SMTextAttacment *attachment = [[SMTextAttacment alloc] init];
+    SMTextAttachment *attachment = [[SMTextAttachment alloc] init];
     attachment.content = content;
     return attachment;
 }
@@ -24,7 +25,7 @@
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    SMTextAttacment *attachment = [[SMTextAttacment alloc] init];
+    SMTextAttachment *attachment = [[SMTextAttachment alloc] init];
     if ([self.content respondsToSelector:@selector(copy)]) {
         attachment.content = [self.content copy];
     } else {
