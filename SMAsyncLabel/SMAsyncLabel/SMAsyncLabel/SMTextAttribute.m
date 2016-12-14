@@ -7,8 +7,10 @@
 //
 
 #import "SMTextAttribute.h"
+
 NSString *const SMTextAttachmentAttributeName = @"SMTextAttachment";
 NSString *const SMTextAttachmentToken = @"\uFFFC";
+
 @implementation SMTextAttachment
 + (instancetype)sm_attachmentWithContent:(id)content {
     SMTextAttachment *attachment = [[SMTextAttachment alloc] init];

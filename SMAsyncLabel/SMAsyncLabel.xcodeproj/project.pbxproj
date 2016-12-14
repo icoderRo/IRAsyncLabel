@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F42AC9221DF5739C00B0425B /* SMAsyncLabeCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F42AC9211DF5739C00B0425B /* SMAsyncLabeCreateViewController.m */; };
+		F434903A1DFFA1E9000DDE9A /* SMTextRunDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F43490391DFFA1E9000DDE9A /* SMTextRunDelegate.m */; };
 		F44242971DF9453D002311FC /* SMTextAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = F44242961DF9453D002311FC /* SMTextAttribute.m */; };
 		F442429A1DF951DB002311FC /* SMAttchmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F44242991DF951DB002311FC /* SMAttchmentViewController.m */; };
 		F453F3A21DF1475300E598FF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F453F3881DF1475300E598FF /* Info.plist */; };
@@ -36,6 +37,8 @@
 /* Begin PBXFileReference section */
 		F42AC9201DF5739C00B0425B /* SMAsyncLabeCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAsyncLabeCreateViewController.h; sourceTree = "<group>"; };
 		F42AC9211DF5739C00B0425B /* SMAsyncLabeCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMAsyncLabeCreateViewController.m; sourceTree = "<group>"; };
+		F43490381DFFA1E9000DDE9A /* SMTextRunDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTextRunDelegate.h; sourceTree = "<group>"; };
+		F43490391DFFA1E9000DDE9A /* SMTextRunDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTextRunDelegate.m; sourceTree = "<group>"; };
 		F44242951DF9453D002311FC /* SMTextAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTextAttribute.h; sourceTree = "<group>"; };
 		F44242961DF9453D002311FC /* SMTextAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMTextAttribute.m; sourceTree = "<group>"; };
 		F44242981DF951DB002311FC /* SMAttchmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMAttchmentViewController.h; sourceTree = "<group>"; };
@@ -200,6 +203,8 @@
 				F4B590781DEBCB240075A472 /* SMTextLine.m */,
 				F44242951DF9453D002311FC /* SMTextAttribute.h */,
 				F44242961DF9453D002311FC /* SMTextAttribute.m */,
+				F43490381DFFA1E9000DDE9A /* SMTextRunDelegate.h */,
+				F43490391DFFA1E9000DDE9A /* SMTextRunDelegate.m */,
 			);
 			path = SMAsyncLabel;
 			sourceTree = "<group>";
@@ -296,6 +301,7 @@
 				F453F3A81DF1475300E598FF /* MASViewConstraint.m in Sources */,
 				F4C910371DE811BB00514987 /* SMAsyncLabel.m in Sources */,
 				F453F3A71DF1475300E598FF /* MASViewAttribute.m in Sources */,
+				F434903A1DFFA1E9000DDE9A /* SMTextRunDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

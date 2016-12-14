@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-
+UIKIT_EXTERN NSString *const SMTextAttachmentAttributeName;
+UIKIT_EXTERN NSString *const SMTextAttachmentToken;
 
 @interface SMTextAttachment : NSObject<NSCopying, NSCoding>
 

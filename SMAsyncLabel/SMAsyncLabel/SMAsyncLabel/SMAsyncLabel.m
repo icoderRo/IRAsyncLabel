@@ -8,6 +8,7 @@
 
 #import "SMAsyncLabel.h"
 #import "SMAsyncLayer.h"
+#import "SMTextRunDelegate.h"
 
 @interface SMAsyncLabel () <SMLayerDelegate>
 /// make the NSAttributedString -> NSMutableAttributedString for using addAttributemethod  or removeAttribute
@@ -312,27 +313,38 @@
     [self setAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:range];
 }
 
-//+ (NSMutableAttributedString *)attachmentStringWithContent:(id)content
-//                                               contentMode:(UIViewContentMode)contentMode
-//                                                  userInfo:(NSDictionary *)userInfo
-//                                                     width:(CGFloat)width
-//                                                    ascent:(CGFloat)ascent
-//                                                   descent:(CGFloat)descent {
-//    
-//    NSMutableAttributedString *attrs = [[NSMutableAttributedString alloc] initWithString:SMTextAttachmentToken];
-//    SMTextAttachment *attach = [[SMTextAttachment alloc] init];
-//    attach.content = content;
-//    attach.contentMode = contentMode;
-//    attach.userInfo = userInfo;
-//    
-//    
-//}
++ (NSMutableAttributedString *)attachmentStringWithContent:(id)content
+                                               contentMode:(UIViewContentMode)contentMode
+                                                  userInfo:(NSDictionary *)userInfo
+                                                     width:(CGFloat)width
+                                                    ascent:(CGFloat)ascent
+                                                   descent:(CGFloat)descent {
+    
+    NSMutableAttributedString *attrs = [[NSMutableAttributedString alloc] initWithString:SMTextAttachmentToken];
+    SMTextAttachment *attach = [[SMTextAttachment alloc] init];
+    attach.content = content;
+    attach.contentMode = contentMode;
+    attach.userInfo = userInfo;
+    
+    SMTextRunDelegate *delegate = [[SMTextRunDelegate alloc] init];
+    delegate.width = width;
+    delegate.ascent = ascent;
+    delegate.descent = descent;
+    CTRunDelegateRef delegateRef = delegate.CTRunDelegate;
+    [attrs setRunDelegate:delegateRef range:NSMakeRange(0, attrs.length)];
+    if (delegate) CFRetain(delegateRef);
+    return attrs;
+    
+}
+
+- (void)setRunDelegate:(CTRunDelegateRef)runDelegate range:(NSRange)range {
+    [self setAttribute:(id)kCTRunDelegateAttributeName value:(__bridge id)runDelegate range:range];
+}
 
 #pragma mark - Attribute
 - (void)setAttribute:(NSString *)name value:(id)value range:(NSRange)range {
-    if (!name || [NSNull isEqual:name]){
-        return;
-    }
+    if (!name || [NSNull isEqual:name]) return;
+    
     if (value && ![NSNull isEqual:value]) {
         [self addAttribute:name value:value range:range];
     }else {
