@@ -8,6 +8,7 @@
 
 #import "SMTextLayout.h"
 #import <CoreText/CoreText.h>
+#import "SMTextAttribute.h"
 const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
 @interface SMTextLayout ()
 //@property (nonatomic,strong) SMTextContainer *container;
@@ -22,6 +23,7 @@ const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
     BOOL needTruncation = NO;
     SMTextLine *truncatedLine = nil;
     if (!text || !container) return nil;
+    SMTextLayout *layout = [[SMTextLayout alloc] init];
     
     // CTFrameRef
     NSMutableAttributedString *attText = text.mutableCopy;
@@ -218,17 +220,47 @@ const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
         }
     }
     
+    // check attribute status
+    // can change
+    if (visibleRange.length > 0) {
+        layout->_needDrawText = YES;
+        
+//        [text enumerateAttributesInRange:visibleRange options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(NSDictionary<NSString *,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
+//            if (attrs[SMTextAttachmentAttributeName]) layout->_needDrawAttachment = YES;
+//        }];
+    }
     
+    NSMutableArray *attachments = [NSMutableArray array];
+    NSMutableArray *attachmentRanges = [NSMutableArray array];
+    NSMutableArray *attachmentRects = [NSMutableArray array];
+    NSMutableSet *attachmentContents = [NSMutableSet set];
+    for (SMTextLine *line in linesArray) {
+        if (line.attachments.count > 0) {
+            [attachments addObjectsFromArray:line.attachments];
+            [attachmentRects addObjectsFromArray:line.attachmentRects];
+            [attachmentRanges addObjectsFromArray:line.attachmentRanges];
+            
+            layout->_needDrawAttachment = YES;
+            
+            for (SMTextAttachment *attachment in line.attachments) {
+                if (attachment.content) {
+                    [attachmentContents addObject:attachment.content];
+                }
+            }
+        }
+    }
     
     // Setter
-    SMTextLayout *layout = [[SMTextLayout alloc] init];
-    layout->_needDrawText = YES;
     layout->_container = container;
     layout->_text = text.mutableCopy;
     layout->_linesArray = linesArray;
     layout->_size = size;
     layout->_rowCount = rowCount;
     layout->_truncatedLine = truncatedLine;
+    layout->_attachments = attachments;
+    layout->_attachmentRects = attachmentRects;
+    layout->_attachmentRanges = attachmentRanges;
+    layout->_attachmentContents = attachmentContents;
     // TODO: setting more ....
     
     CFRelease(frameSetter);
@@ -245,13 +277,19 @@ const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
                   cancel:(BOOL (^)(void))cancel {
     
     
-    
-    if (self.needDrawText && context) {
-        if (cancel && cancel()) return;
-        SMTextDrawText(self, context, size, point, cancel);
-        //        SMTextDrawFrameText(context, self, size, point, cancel);
+    @autoreleasepool {
+        if (self.needDrawText && context) {
+            if (cancel && cancel()) return;
+            SMTextDrawText(self, context, size, point, cancel);
+            //        SMTextDrawFrameText(context, self, size, point, cancel);
+        }
         
+        if (self.needDrawAttachment && context) {
+            if (cancel && cancel()) return;
+            SMTextDrawAttachment(self, context, size, point, cancel);
+        }
     }
+  
 }
 
 static void SMTextDrawText(SMTextLayout *layout, CGContextRef context, CGSize size, CGPoint point,  BOOL (^cancel)(void)) {
@@ -287,7 +325,133 @@ static void SMTextDrawText(SMTextLayout *layout, CGContextRef context, CGSize si
     } CGContextRestoreGState(context);
 }
 
+static void SMTextDrawAttachment(SMTextLayout *layout, CGContextRef context, CGSize size, CGPoint point, BOOL(^cancel)(void)) {
+   
+    for (NSUInteger i = 0; i < layout.attachments.count; i++) {
+        if (cancel && cancel()) break;
+        
+        SMTextAttachment *attachment = layout.attachments[i];
+        if (!attachment) continue;
+        
+        UIImage *image = nil;
+        UIView *view = nil;
+        CALayer *layer = nil;
+        
+        if ([attachment.content isKindOfClass:[UIImage class]]) {
+            image = attachment.content;
+        } else if ([attachment.content isKindOfClass:[UIView class]]) {
+            view = attachment.content;
+        } else if ([attachment.content isKindOfClass:[CALayer class]]) {
+            layout = attachment.content;
+        }
+        
+        if (!image && !layer && !view) continue;
+     
+        
+        CGSize _size = image ? image.size : view ? view.frame.size : layer.frame.size;
+        CGRect rect = ((NSValue *)layout.attachmentRects[i]).CGRectValue;
+        rect = UIEdgeInsetsInsetRect(rect, attachment.contentInsets);
+        rect = SMCGRectFitWithContentMode(rect, _size, attachment.contentMode);
+        rect = CGRectStandardize(rect);
+        rect.origin.x += point.x;
+        rect.origin.y += point.y;
+        
+        if (image) {
+            CGImageRef imageRef = image.CGImage;
+            if (imageRef) {
+                CGContextSaveGState(context);
+                CGContextTranslateCTM(context, 0, CGRectGetMaxY(rect) + CGRectGetMinY(rect));
+                CGContextScaleCTM(context, 1, -1);
+                CGContextDrawImage(context, rect, imageRef);
+                CGContextRestoreGState(context);
+            }
+        } else if (view) {
+            
+        } else if (layer) {
+            
+        }   
+    }
+}
 
+static CGRect SMCGRectFitWithContentMode(CGRect rect, CGSize size, UIViewContentMode mode) {
+    rect = CGRectStandardize(rect);
+    size.width = size.width < 0 ? -size.width : size.width;
+    size.height = size.height < 0 ? -size.height : size.height;
+    CGPoint center = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
+    switch (mode) {
+        case UIViewContentModeScaleAspectFit:
+        case UIViewContentModeScaleAspectFill: {
+            if (rect.size.width < 0.01 || rect.size.height < 0.01 ||
+                size.width < 0.01 || size.height < 0.01) {
+                rect.origin = center;
+                rect.size = CGSizeZero;
+            } else {
+                CGFloat scale;
+                if (mode == UIViewContentModeScaleAspectFit) {
+                    if (size.width / size.height < rect.size.width / rect.size.height) {
+                        scale = rect.size.height / size.height;
+                    } else {
+                        scale = rect.size.width / size.width;
+                    }
+                } else {
+                    if (size.width / size.height < rect.size.width / rect.size.height) {
+                        scale = rect.size.width / size.width;
+                    } else {
+                        scale = rect.size.height / size.height;
+                    }
+                }
+                size.width *= scale;
+                size.height *= scale;
+                rect.size = size;
+                rect.origin = CGPointMake(center.x - size.width * 0.5, center.y - size.height * 0.5);
+            }
+        } break;
+        case UIViewContentModeCenter: {
+            rect.size = size;
+            rect.origin = CGPointMake(center.x - size.width * 0.5, center.y - size.height * 0.5);
+        } break;
+        case UIViewContentModeTop: {
+            rect.origin.x = center.x - size.width * 0.5;
+            rect.size = size;
+        } break;
+        case UIViewContentModeBottom: {
+            rect.origin.x = center.x - size.width * 0.5;
+            rect.origin.y += rect.size.height - size.height;
+            rect.size = size;
+        } break;
+        case UIViewContentModeLeft: {
+            rect.origin.y = center.y - size.height * 0.5;
+            rect.size = size;
+        } break;
+        case UIViewContentModeRight: {
+            rect.origin.y = center.y - size.height * 0.5;
+            rect.origin.x += rect.size.width - size.width;
+            rect.size = size;
+        } break;
+        case UIViewContentModeTopLeft: {
+            rect.size = size;
+        } break;
+        case UIViewContentModeTopRight: {
+            rect.origin.x += rect.size.width - size.width;
+            rect.size = size;
+        } break;
+        case UIViewContentModeBottomLeft: {
+            rect.origin.y += rect.size.height - size.height;
+            rect.size = size;
+        } break;
+        case UIViewContentModeBottomRight: {
+            rect.origin.x += rect.size.width - size.width;
+            rect.origin.y += rect.size.height - size.height;
+            rect.size = size;
+        } break;
+        case UIViewContentModeScaleToFill:
+        case UIViewContentModeRedraw:
+        default: {
+            rect = rect;
+        }
+    }
+    return rect;
+}
 // test
 static void SMTextDrawFrameText(CGContextRef context, SMTextLayout *layout, CGSize size, CGPoint point,  BOOL (^cancel)(void)) {
     

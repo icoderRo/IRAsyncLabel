@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreText/CoreText.h>
+#import "SMTextAttribute.h"
 
 /**
  A text line object wrapped `CTLineRef`
@@ -31,6 +32,9 @@
 @property (nonatomic, assign, readonly) CGFloat trailingWhitespaceWidth;
 @property (nonatomic) NSUInteger index;     ///< line index
 @property (nonatomic) NSUInteger row;
+@property (nonatomic, copy, readonly) NSArray<SMTextAttachment *> *attachments;
+@property (nonatomic,copy,readonly) NSArray<NSValue *>* attachmentRanges;
+@property (nonatomic,copy,readonly) NSArray<NSValue *>* attachmentRects;
 
 
 + (instancetype)sm_textLineWithCTLine:(CTLineRef)CTLine lineOrigin:(CGPoint)lineOrigin;

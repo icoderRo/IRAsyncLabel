@@ -38,10 +38,15 @@
 //- (void)setTextAttachment:(SMTextAttacment *)textAttachment range:(NSRange)range;
 + (NSMutableAttributedString *)attachmentStringWithContent:(id)content
                                                contentMode:(UIViewContentMode)contentMode
-                                                  userInfo:(NSDictionary *)userInfo
                                                      width:(CGFloat)width
                                                     ascent:(CGFloat)ascent
                                                    descent:(CGFloat)descent;
+
++ (NSMutableAttributedString *)attachmentStringWithContent:(nullable id)content
+                                               contentMode:(UIViewContentMode)contentMode
+                                            attachmentSize:(CGSize)attachmentSize
+                                               alignToFont:(UIFont *)font
+                                                 alignment:(SMTextVerticalAlignment)alignment;
 @end
 
 

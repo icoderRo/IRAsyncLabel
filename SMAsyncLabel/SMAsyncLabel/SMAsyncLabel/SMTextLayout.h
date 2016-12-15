@@ -14,13 +14,16 @@ extern const CGSize SMTextContainerMaxSize;
 @property (nonatomic, strong, readonly) SMTextContainer *container;
 @property (nonatomic, strong, readonly) SMTextLine *truncatedLine;
 @property (nonatomic, strong, readonly) NSAttributedString *text;
-@property (nonatomic, copy) NSArray *textArray;
+//@property (nonatomic, copy) NSArray *textArray;
 @property (nonatomic, strong, readonly) NSArray<SMTextLine *> *linesArray;
 @property (nonatomic, assign, readonly) CGSize size;
 @property (nonatomic, assign, readonly) BOOL needDrawText;
-@property (nonatomic, readonly) NSUInteger rowCount;
-
-
+@property (nonatomic, assign, readonly) BOOL needDrawAttachment;
+@property (nonatomic, assign, readonly) NSUInteger rowCount;
+@property (nonatomic, strong, readonly) NSArray<SMTextAttachment *> *attachments;
+@property (nonatomic, strong, readonly) NSArray<NSValue *> *attachmentRanges;
+@property (nonatomic, strong, readonly) NSArray<NSValue *> *attachmentRects;
+@property (nonatomic, strong, readonly) NSSet<id> *attachmentContents;
 
 + (instancetype)sm_layoutWithContainer:(SMTextContainer *)container
                                   text:(NSAttributedString *)text;

@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, SMTextVerticalAlignment) {
+    SMTextVerticalAlignmentTop =    0, ///< Top alignment.
+    SMTextVerticalAlignmentCenter = 1, ///< Center alignment.
+    SMTextVerticalAlignmentBottom = 2, ///< Bottom alignment.
+};
+
 UIKIT_EXTERN NSString *const SMTextAttachmentAttributeName;
 UIKIT_EXTERN NSString *const SMTextAttachmentToken;
 

@@ -304,37 +304,96 @@
     }
 }
 
-
-//- (void)setTextAttachment:(SMTextAttacment *)textAttachment range:(NSRange)range {
-//    [self setAttribute:SMTextAttachmentAttributeName value:textAttachment range:range];
-//}
-
 - (void)setParagraphStyle:(NSParagraphStyle *)paragraphStyle range:(NSRange)range {
     [self setAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:range];
 }
 
 + (NSMutableAttributedString *)attachmentStringWithContent:(id)content
                                                contentMode:(UIViewContentMode)contentMode
-                                                  userInfo:(NSDictionary *)userInfo
                                                      width:(CGFloat)width
                                                     ascent:(CGFloat)ascent
                                                    descent:(CGFloat)descent {
     
     NSMutableAttributedString *attrs = [[NSMutableAttributedString alloc] initWithString:SMTextAttachmentToken];
+    
     SMTextAttachment *attach = [[SMTextAttachment alloc] init];
     attach.content = content;
     attach.contentMode = contentMode;
-    attach.userInfo = userInfo;
+    [attrs setTextAttachment:attach range:NSMakeRange(0, attrs.length)];
     
     SMTextRunDelegate *delegate = [[SMTextRunDelegate alloc] init];
     delegate.width = width;
     delegate.ascent = ascent;
     delegate.descent = descent;
+    
     CTRunDelegateRef delegateRef = delegate.CTRunDelegate;
     [attrs setRunDelegate:delegateRef range:NSMakeRange(0, attrs.length)];
     if (delegate) CFRetain(delegateRef);
     return attrs;
     
+}
+
++ (NSMutableAttributedString *)attachmentStringWithContent:(id)content
+                                               contentMode:(UIViewContentMode)contentMode
+                                            attachmentSize:(CGSize)attachmentSize
+                                               alignToFont:(UIFont *)font
+                                                 alignment:(SMTextVerticalAlignment)alignment {
+    
+    NSMutableAttributedString *attrs = [[NSMutableAttributedString alloc] initWithString:SMTextAttachmentToken];
+  
+    SMTextAttachment *attach = [[SMTextAttachment alloc] init];
+    attach.content = content;
+    attach.contentMode = contentMode;
+    [attrs setTextAttachment:attach range:NSMakeRange(0, attrs.length)];
+    
+    SMTextRunDelegate *delegate = [[SMTextRunDelegate alloc] init];
+    delegate.width = attachmentSize.width;
+    switch (alignment) {
+        case SMTextVerticalAlignmentTop: {
+            delegate.ascent = font.ascender;
+            delegate.descent = attachmentSize.height - font.ascender;
+            
+            if (delegate.descent < 0) {
+                delegate.descent = 0;
+                delegate.ascent = attachmentSize.height;
+            }
+        } break;
+        case SMTextVerticalAlignmentCenter: {
+            CGFloat fontHeight = font.ascender - font.descender;
+            CGFloat offsetY = font.ascender - fontHeight * 0.5;
+            delegate.ascent = attachmentSize.height * 0.5 + offsetY;
+            delegate.descent = attachmentSize.height - delegate.ascent;
+            
+            if (delegate.descent < 0) {
+                delegate.descent = 0;
+                delegate.ascent = attachmentSize.height;
+            }
+        } break;
+        case SMTextVerticalAlignmentBottom: {
+            delegate.ascent = attachmentSize.height + font.descender;
+            delegate.descent = -font.descender;
+            
+            if (delegate.descent < 0) {
+                delegate.ascent = 0;
+                delegate.descent = attachmentSize.height;
+            }
+        } break;
+            
+        default: {
+            delegate.ascent = attachmentSize.height;
+            delegate.descent = 0;
+        }break;
+    }
+    
+    CTRunDelegateRef delegateRef = delegate.CTRunDelegate;
+    [attrs setRunDelegate:delegateRef range:NSMakeRange(0, attrs.length)];
+    if (delegate) CFRelease(delegateRef);
+    
+    return attrs;
+}
+
+- (void)setTextAttachment:(SMTextAttachment *)textAttachment range:(NSRange)range {
+    [self setAttribute:SMTextAttachmentAttributeName value:textAttachment range:range];
 }
 
 - (void)setRunDelegate:(CTRunDelegateRef)runDelegate range:(NSRange)range {
