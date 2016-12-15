@@ -29,9 +29,11 @@ extern const CGSize SMTextContainerMaxSize;
                                   text:(NSAttributedString *)text;
 
 - (void)sm_drawInContext:(CGContextRef)context
-                 size:(CGSize)size
-                point:(CGPoint)point
-               cancel:(BOOL (^)(void))cancel;
+                    size:(CGSize)size
+                   point:(CGPoint)point
+                    view:(UIView *)view
+                   layer:(CALayer *)layer
+                  cancel:(BOOL (^)(void))cancel;
 
 + (instancetype)new UNAVAILABLE_ATTRIBUTE; 
 @end

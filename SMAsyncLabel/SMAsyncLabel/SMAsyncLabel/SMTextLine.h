@@ -30,11 +30,11 @@
 @property (nonatomic, assign, readonly) CGFloat leading;
 @property (nonatomic, assign, readonly) CGFloat lineWidth;
 @property (nonatomic, assign, readonly) CGFloat trailingWhitespaceWidth;
-@property (nonatomic) NSUInteger index;     ///< line index
-@property (nonatomic) NSUInteger row;
+@property (nonatomic, assign) NSUInteger index;     ///< line index
+@property (nonatomic, assign) NSUInteger row;
 @property (nonatomic, copy, readonly) NSArray<SMTextAttachment *> *attachments;
-@property (nonatomic,copy,readonly) NSArray<NSValue *>* attachmentRanges;
-@property (nonatomic,copy,readonly) NSArray<NSValue *>* attachmentRects;
+@property (nonatomic, copy,readonly) NSArray<NSValue *>* attachmentRanges;
+@property (nonatomic, copy,readonly) NSArray<NSValue *>* attachmentRects;
 
 
 + (instancetype)sm_textLineWithCTLine:(CTLineRef)CTLine lineOrigin:(CGPoint)lineOrigin;

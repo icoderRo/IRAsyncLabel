@@ -60,6 +60,51 @@
 
 - (void)sm_calculateBounds {
     _frame = CGRectMake(_lineOrigin.x + _firstGlyphPos, _lineOrigin.y - _ascent, _lineWidth, _ascent + _descent);
+
+    if (!_CTLine) return;
+    
+    // get runs
+    CFArrayRef runs = CTLineGetGlyphRuns(_CTLine);
+    NSUInteger runCount = CFArrayGetCount(runs);
+    if (runCount ==0) return;
+    
+    NSMutableArray *attachments = [NSMutableArray array];
+    NSMutableArray *attachmentRanges = [NSMutableArray array];
+    NSMutableArray *attachmentRects = [NSMutableArray array];
+    
+    // if run attribute -> ReCalculate
+    for (NSUInteger i = 0; i < runCount; i++) {
+        CTRunRef run = CFArrayGetValueAtIndex(runs, i);
+        CFIndex glyphCount = CTRunGetGlyphCount(run);
+        if (glyphCount == 0) continue;
+        
+        NSDictionary *dict = (id)CTRunGetAttributes(run);
+        SMTextAttachment *attachment = dict[SMTextAttachmentAttributeName];
+        if (attachment) {
+            CGPoint runPos = CGPointZero;
+            CTRunGetPositions(run, CFRangeMake(0, 1), &runPos);
+            
+            CGFloat ascent, descent, leading, runWidth;
+            CGRect runTypographicBounds;
+            runWidth = CTRunGetTypographicBounds(run, CFRangeMake(0, 0), &ascent, &descent, &leading);
+            
+            runPos.x += _lineOrigin.x;
+            runPos.y = self.lineOrigin.y - runPos.y;
+            runTypographicBounds = CGRectMake(runPos.x, runPos.y - ascent, runWidth, ascent + descent);
+            
+            CFRange cfRange = CTRunGetStringRange(run);
+            NSRange runRange = NSMakeRange(cfRange.location, cfRange.length);
+            
+            [attachments addObject:attachment];
+            [attachmentRects addObject:[NSValue valueWithCGRect:runTypographicBounds]];
+            [attachmentRanges addObject:[NSValue valueWithRange:runRange]];
+        }
+    }
+    
+    _attachments = attachments.count ? [attachments copy] : nil;
+    _attachmentRanges = attachmentRanges.count ? [attachmentRanges copy] : nil;
+    _attachmentRects = attachmentRects.count ? [attachmentRects copy] : nil;
+    
 }
 
 #pragma mark - Getter

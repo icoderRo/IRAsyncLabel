@@ -65,14 +65,18 @@
         }
         
         CGPoint point = CGPointZero;
+//        if (self.viewti) {
+//            <#statements#>
+//        }
         
-        [_textLayout sm_drawInContext:context size:_textLayout.size point:point cancel:isCancelled];
+        
+        [_textLayout sm_drawInContext:context size:_textLayout.size point:point view:self layer:self.layer cancel:isCancelled];
     };
     
     // remove attachment, animation
-    task.didEndDisplay = ^(CALayer *layer, BOOL finished) {
-        
-    };
+//    task.didEndDisplay = ^(CALayer *layer, BOOL finished) {
+//        [_textLayout sm_drawInContext:nil size:layer.bounds.size point:CGPointZero view:self layer:self.layer cancel:NULL];
+//    };
     
     
     return task;

@@ -9,6 +9,20 @@
 #import "SMTextLayout.h"
 #import <CoreText/CoreText.h>
 #import "SMTextAttribute.h"
+#define dispatch_main_sync_safe(block)\
+if ([NSThread isMainThread]) {\
+block();\
+} else {\
+dispatch_sync(dispatch_get_main_queue(), block);\
+}
+
+#define dispatch_main_async_safe(block)\
+if ([NSThread isMainThread]) {\
+block();\
+} else {\
+dispatch_async(dispatch_get_main_queue(), block);\
+}
+
 const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
 @interface SMTextLayout ()
 //@property (nonatomic,strong) SMTextContainer *container;
@@ -274,6 +288,8 @@ const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
 - (void)sm_drawInContext:(CGContextRef)context
                     size:(CGSize)size
                    point:(CGPoint)point
+                    view:(UIView *)view
+                   layer:(CALayer *)layer
                   cancel:(BOOL (^)(void))cancel {
     
     
@@ -286,8 +302,10 @@ const CGSize SMTextContainerMaxSize = (CGSize){0x100000, 0x100000};
         
         if (self.needDrawAttachment && context) {
             if (cancel && cancel()) return;
-            SMTextDrawAttachment(self, context, size, point, cancel);
+            SMTextDrawAttachment(self, context, size, point, view, layer, cancel);
         }
+        
+        
     }
   
 }
@@ -325,8 +343,9 @@ static void SMTextDrawText(SMTextLayout *layout, CGContextRef context, CGSize si
     } CGContextRestoreGState(context);
 }
 
-static void SMTextDrawAttachment(SMTextLayout *layout, CGContextRef context, CGSize size, CGPoint point, BOOL(^cancel)(void)) {
+static void SMTextDrawAttachment(SMTextLayout *layout, CGContextRef context, CGSize size, CGPoint point, UIView *containerView, CALayer *containerLayer, BOOL(^cancel)(void)) {
    
+    /// get each attachment
     for (NSUInteger i = 0; i < layout.attachments.count; i++) {
         if (cancel && cancel()) break;
         
@@ -346,8 +365,19 @@ static void SMTextDrawAttachment(SMTextLayout *layout, CGContextRef context, CGS
         }
         
         if (!image && !layer && !view) continue;
-     
+        if (image && !context) {
+            continue;
+        }
         
+        if (view && !containerView) {
+            continue;
+        }
+        
+        if (layer && !containerLayer) {
+            continue;
+        }
+     
+        /// get each attachment rect
         CGSize _size = image ? image.size : view ? view.frame.size : layer.frame.size;
         CGRect rect = ((NSValue *)layout.attachmentRects[i]).CGRectValue;
         rect = UIEdgeInsetsInsetRect(rect, attachment.contentInsets);
@@ -356,6 +386,7 @@ static void SMTextDrawAttachment(SMTextLayout *layout, CGContextRef context, CGS
         rect.origin.x += point.x;
         rect.origin.y += point.y;
         
+        /// draw the image to current rect
         if (image) {
             CGImageRef imageRef = image.CGImage;
             if (imageRef) {
@@ -366,10 +397,18 @@ static void SMTextDrawAttachment(SMTextLayout *layout, CGContextRef context, CGS
                 CGContextRestoreGState(context);
             }
         } else if (view) {
+            NSLog(@"执行了view");
+            
+//            dispatch_main_sync_safe(^{
+                containerView.frame = rect;
+                [containerView addSubview:view];
+                
+//            } );
+            
             
         } else if (layer) {
             
-        }   
+        }
     }
 }
 
